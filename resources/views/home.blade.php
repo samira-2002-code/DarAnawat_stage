@@ -73,7 +73,7 @@
                             BEGINS HERE
                         </h1>
                         <p class="mt-6 max-w-xl text-lg text-white/80 md:text-xl">
-                            More than a stay. A Moroccan experience.
+                            A secluded hideaway where Moroccan elegance meets warm, effortless living.
                         </p>
 
                         <div class="mt-10 flex flex-col gap-4 sm:flex-row">
