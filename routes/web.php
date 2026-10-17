@@ -1,6 +1,26 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/language/{locale}', function (Request $request, string $locale) {
+    abort_unless(in_array($locale, ['fr', 'en', 'es', 'ar'], true), 404);
+
+    $request->session()->put('locale', $locale);
+    app()->setLocale($locale);
+
+    $referer = $request->headers->get('referer');
+
+    if (
+        $referer
+        && in_array(parse_url($referer, PHP_URL_SCHEME), ['http', 'https'], true)
+        && strcasecmp((string) parse_url($referer, PHP_URL_HOST), $request->getHost()) === 0
+    ) {
+        return redirect()->to($referer);
+    }
+
+    return redirect()->route('home');
+})->name('language.switch');
 
 Route::get('/', function () {
     return view('home');

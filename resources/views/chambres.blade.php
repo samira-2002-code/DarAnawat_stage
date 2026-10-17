@@ -35,10 +35,10 @@
 
 @extends('layouts.app')
 
-@section('title', 'Nos chambres | Dar Anawat')
+@section('title', __('site.meta.rooms_title'))
 
 @section('content')
-    <main lang="fr" class="overflow-hidden bg-[#f9f5ef] text-[#1d2d2a]">
+    <main class="overflow-hidden bg-[#f9f5ef] text-[#1d2d2a]">
         <section class="hero relative min-h-[520px] overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center opacity-35" style="background-image: url('{{ asset('images/hero.jpg') }}');"></div>
             <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,18,16,0.82),rgba(10,18,16,0.38))]"></div>
@@ -49,10 +49,10 @@
 
                 <div class="section-shell flex min-h-[520px] items-end pb-20 pt-36">
                     <div class="max-w-3xl text-white">
-                        <p class="mb-5 text-xs font-semibold uppercase tracking-[0.35em] text-[#e2c88c]">Séjourner à Dar Anawat</p>
-                        <h1 class="font-display text-5xl leading-[0.95] text-white md:text-7xl">Nos Chambres</h1>
+                        <p class="mb-5 text-xs font-semibold uppercase tracking-[0.35em] text-[#e2c88c]">{{ __('site.chambres.hero_kicker') }}</p>
+                        <h1 class="font-display text-5xl leading-[0.95] text-white md:text-7xl">{{ __('site.chambres.title') }}</h1>
                         <p class="mt-6 max-w-2xl text-lg leading-8 text-white/80 md:text-xl">
-                            Découvrez nos espaces pensés pour votre confort et votre séjour à Dar Anawat.
+                            {{ __('site.chambres.description') }}
                         </p>
                     </div>
                 </div>
@@ -62,8 +62,8 @@
         <section class="bg-[#f3ede0] py-20 md:py-28">
             <div class="section-shell">
                 <div class="mx-auto max-w-3xl text-center">
-                    <p class="section-kicker">Le repos, avec élégance</p>
-                    <h2 class="section-title px-3 text-4xl leading-tight md:text-6xl">Un espace à votre mesure</h2>
+                    <p class="section-kicker">{{ __('site.chambres.section_kicker') }}</p>
+                    <h2 class="section-title px-3 text-4xl leading-tight md:text-6xl">{{ __('site.chambres.section_title') }}</h2>
                 </div>
 
                 <div class="mt-12 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">

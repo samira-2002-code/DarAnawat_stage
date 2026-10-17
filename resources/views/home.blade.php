@@ -1,6 +1,7 @@
 @php
     $rooms = [
         [
+            'translation_key' => 'atlas',
             'name' => 'Atlas Room',
             'price' => '950 MAD / night',
             'guests' => 2,
@@ -9,6 +10,7 @@
             'image' => asset('images/rooms/atlas.jpg'),
         ],
         [
+            'translation_key' => 'palm',
             'name' => 'Palm Room',
             'price' => '1150 MAD / night',
             'guests' => 2,
@@ -17,6 +19,7 @@
             'image' => asset('images/rooms/palm.jpg'),
         ],
         [
+            'translation_key' => 'suite',
             'name' => 'Anawat Suite',
             'price' => '1650 MAD / night',
             'guests' => 4,
@@ -29,32 +32,34 @@
     $experiences = [
         [
             'icon' => 'R',
-            'title' => 'RELAX',
-            'heading' => 'Hammam & rest',
-            'description' => 'Hammam, wellness and peaceful moments.',
+            'title' => __('site.home.experiences.relax.title'),
+            'heading' => __('site.home.experiences.relax.heading'),
+            'description' => __('site.home.experiences.relax.description'),
         ],
         [
             'icon' => 'D',
-            'title' => 'DISCOVER',
-            'heading' => 'Culture & landscapes',
-            'description' => 'Explore Moroccan culture and surrounding landscapes.',
+            'title' => __('site.home.experiences.discover.title'),
+            'heading' => __('site.home.experiences.discover.heading'),
+            'description' => __('site.home.experiences.discover.description'),
         ],
         [
             'icon' => 'T',
-            'title' => 'TASTE',
-            'heading' => 'Seasonal flavors',
-            'description' => 'Traditional Moroccan cuisine and local flavors.',
+            'title' => __('site.home.experiences.taste.title'),
+            'heading' => __('site.home.experiences.taste.heading'),
+            'description' => __('site.home.experiences.taste.description'),
         ],
         [
             'icon' => 'E',
-            'title' => 'ESCAPE',
-            'heading' => 'Private moments',
-            'description' => 'Romantic and private moments.',
+            'title' => __('site.home.experiences.escape.title'),
+            'heading' => __('site.home.experiences.escape.heading'),
+            'description' => __('site.home.experiences.escape.description'),
         ],
     ];
 @endphp
 
 @extends('layouts.app')
+
+@section('title', __('site.meta.home_title'))
 
 @section('content')
     <main id="home" class="overflow-hidden bg-[#f9f5ef] text-[#1d2d2a]">
@@ -69,16 +74,16 @@
                     <div class="max-w-3xl text-white">
                         <p class="mb-6 text-xs font-semibold uppercase tracking-[0.35em] text-[#e2c88c]">Dar Anawat</p>
                         <h1 class="font-display text-5xl leading-[0.95] text-white md:text-7xl lg:text-[5.2rem]">
-                            YOUR MOROCCAN ESCAPE<br>
-                            BEGINS HERE
+                            {{ __('site.home.hero.title_first') }}<br>
+                            {{ __('site.home.hero.title_second') }}
                         </h1>
                         <p class="mt-6 max-w-xl text-lg text-white/80 md:text-xl">
-                            A secluded hideaway where Moroccan elegance meets warm, effortless living.
+                            {{ __('site.home.hero.description') }}
                         </p>
 
                         <div class="mt-10 flex flex-col gap-4 sm:flex-row">
-                            <a href="#about" class="gold-button">Explore the Dar</a>
-                            <a href="#rooms" class="soft-button border-white/30 bg-white/5 text-white hover:bg-white/10">Discover our rooms</a>
+                            <a href="#about" class="gold-button">{{ __('site.home.hero.explore') }}</a>
+                            <a href="#rooms" class="soft-button border-white/30 bg-white/5 text-white hover:bg-white/10">{{ __('site.home.hero.rooms_link') }}</a>
                         </div>
                     </div>
                 </div>
@@ -88,21 +93,21 @@
         <section id="about" class="section-shell py-24 md:py-28">
             <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
                 <div>
-                    <p class="section-kicker">A stay shaped by beauty</p>
-                    <h2 class="section-title">A warm retreat inspired by the soul of Morocco.</h2>
+                    <p class="section-kicker">{{ __('site.home.about.kicker') }}</p>
+                    <h2 class="section-title">{{ __('site.home.about.title') }}</h2>
                     <p class="mt-6 text-lg leading-8 text-[#4d5b56]">
-                        At Dar Anawat, every detail is designed to feel intimate, generous, and quietly luxurious. From the soft textures of our interiors to the rhythm of the courtyard, the guest house invites slow mornings, memorable evenings, and a deeper connection to the land.
+                        {{ __('site.home.about.first') }}
                     </p>
                     <p class="mt-5 text-lg leading-8 text-[#4d5b56]">
-                        Nestled in an atmosphere of calm and elegance, our boutique guest house blends contemporary comfort with authentic Moroccan character. It is a place to rest, gather, explore, and return to the beauty of everyday rituals.
+                        {{ __('site.home.about.second') }}
                     </p>
                 </div>
 
                 <div class="relative overflow-hidden rounded-[2rem] border border-[#e3d5b0] bg-[#f1e7d5] p-4 shadow-[0_25px_80px_rgba(18,46,42,0.12)]">
-                    <img src="{{ asset('images/hero.jpg') }}" alt="Dar Anawat guest house exterior" class="h-[520px] w-full rounded-[1.5rem] object-cover">
+                    <img src="{{ asset('images/hero.jpg') }}" alt="{{ __('site.home.about.image_alt') }}" class="h-[520px] w-full rounded-[1.5rem] object-cover">
                     <div class="absolute bottom-8 left-8 right-8 rounded-[1.5rem] border border-white/40 bg-[#102f2b]/80 p-5 text-white backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-[#e7c980]">Guest House Experience</p>
-                        <p class="mt-3 text-2xl font-light">Private serenity in a vibrant cultural setting.</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-[#e7c980]">{{ __('site.home.about.image_label') }}</p>
+                        <p class="mt-3 text-2xl font-light">{{ __('site.home.about.image_caption') }}</p>
                     </div>
                 </div>
             </div>
@@ -111,8 +116,8 @@
         <section id="rooms" class="bg-[#f3ede0] py-24 md:py-28">
             <div class="section-shell">
                 <div class="mx-auto max-w-3xl text-center">
-                    <p class="section-kicker">Stay in style</p>
-                    <h2 class="section-title">Find your perfect stay</h2>
+                    <p class="section-kicker">{{ __('site.home.rooms.kicker') }}</p>
+                    <h2 class="section-title">{{ __('site.home.rooms.title') }}</h2>
                 </div>
 
                 <div class="mt-12 grid gap-8 lg:grid-cols-3">
@@ -125,8 +130,8 @@
 
         <section id="experiences" class="section-shell py-24 md:py-28">
             <div class="mx-auto max-w-3xl text-center">
-                <p class="section-kicker">Moments to remember</p>
-                <h2 class="section-title">An experience designed around your rhythm</h2>
+                <p class="section-kicker">{{ __('site.home.experiences.kicker') }}</p>
+                <h2 class="section-title">{{ __('site.home.experiences.title') }}</h2>
             </div>
 
             <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
@@ -143,31 +148,31 @@
             <div class="relative z-10 section-shell">
                 <div class="grid items-end gap-6 md:grid-cols-[0.9fr_1.1fr]">
                     <div>
-                        <p class="section-kicker text-[#e2c88c]">Discover Morocco</p>
-                        <h2 class="section-title text-white">Beauty, culture and local soul.</h2>
+                        <p class="section-kicker text-[#e2c88c]">{{ __('site.home.discover.kicker') }}</p>
+                        <h2 class="section-title text-white">{{ __('site.home.discover.title') }}</h2>
                     </div>
                     <p class="max-w-xl text-lg leading-8 text-[#e8e0d2]">
-                        From the ochre tones of the desert to the lively textures of Marrakech, Dar Anawat offers an invitation to live Morocco with ease and wonder.
+                        {{ __('site.home.discover.description') }}
                     </p>
                 </div>
 
                 <div class="mt-12 grid gap-6 md:grid-cols-3">
                     <article class="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2c88c]">Nature</p>
-                        <h3 class="mt-5 font-display text-4xl">Atlas & desert</h3>
-                        <p class="mt-4 text-base leading-7 text-[#e1d9ce]">Explore panoramic landscapes, peaceful valleys, and golden horizons beyond the city.</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2c88c]">{{ __('site.home.discover.nature.title') }}</p>
+                        <h3 class="mt-5 font-display text-4xl">{{ __('site.home.discover.nature.heading') }}</h3>
+                        <p class="mt-4 text-base leading-7 text-[#e1d9ce]">{{ __('site.home.discover.nature.description') }}</p>
                     </article>
 
                     <article class="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2c88c]">Culture</p>
-                        <h3 class="mt-5 font-display text-4xl">Mosaic stories</h3>
-                        <p class="mt-4 text-base leading-7 text-[#e1d9ce]">Discover artisan heritage, heritage riads, and the timeless beauty of Moroccan craft.</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2c88c]">{{ __('site.home.discover.culture.title') }}</p>
+                        <h3 class="mt-5 font-display text-4xl">{{ __('site.home.discover.culture.heading') }}</h3>
+                        <p class="mt-4 text-base leading-7 text-[#e1d9ce]">{{ __('site.home.discover.culture.description') }}</p>
                     </article>
 
                     <article class="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2c88c]">Local experiences</p>
-                        <h3 class="mt-5 font-display text-4xl">Slow living</h3>
-                        <p class="mt-4 text-base leading-7 text-[#e1d9ce]">Private dinners, market walks, tea rituals, and warm welcomes inspired by everyday Moroccan life.</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#e2c88c]">{{ __('site.home.discover.local.title') }}</p>
+                        <h3 class="mt-5 font-display text-4xl">{{ __('site.home.discover.local.heading') }}</h3>
+                        <p class="mt-4 text-base leading-7 text-[#e1d9ce]">{{ __('site.home.discover.local.description') }}</p>
                     </article>
                 </div>
             </div>
@@ -175,13 +180,13 @@
 
         <section id="cta" class="section-shell py-24 text-center md:py-28">
             <div class="rounded-[2.5rem] border border-[#e2d3a6] bg-[linear-gradient(135deg,#f7f0e2,#fffdf9)] p-8 shadow-[0_24px_60px_rgba(24,48,44,0.08)] md:p-16">
-                <p class="section-kicker">Ready when you are</p>
-                <h2 class="mx-auto max-w-4xl section-title">READY TO EXPERIENCE DAR ANAWAT?</h2>
+                <p class="section-kicker">{{ __('site.home.cta.kicker') }}</p>
+                <h2 class="mx-auto max-w-4xl section-title">{{ __('site.home.cta.title') }}</h2>
                 <p class="mx-auto mt-6 max-w-2xl text-xl leading-9 text-[#485c57]">
-                    Your stay is more than a room. It is a story waiting to be lived.
+                    {{ __('site.home.cta.description') }}
                 </p>
                 <div class="mt-10 flex justify-center">
-                    <button type="button" class="gold-button">Plan Your Stay</button>
+                    <a href="{{ route('chambres') }}" class="gold-button">{{ __('site.home.cta.button') }}</a>
                 </div>
             </div>
         </section>
