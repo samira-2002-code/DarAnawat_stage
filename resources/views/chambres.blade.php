@@ -68,7 +68,7 @@
 
                 <div class="mt-12 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
                     @foreach ($rooms as $room)
-                        <x-chambre-card :room="$room" />
+                        <x-room-card :room="$room" />
                     @endforeach
                 </div>
             </div>
