@@ -41,6 +41,14 @@ img {
     font-family: var(--font-display);
 }
 
+html[lang="ar"] body {
+    font-family: 'Noto Naskh Arabic', 'Segoe UI', sans-serif;
+}
+
+html[lang="ar"] .font-display {
+    font-family: 'Noto Naskh Arabic', Georgia, serif;
+}
+
 .section-shell {
     width: min(1200px, calc(100% - 2rem));
     margin-inline: auto;
