@@ -12,7 +12,7 @@
     <div class="space-y-5 p-6 md:p-7">
         <div class="flex items-start justify-between gap-4">
             <h3 class="font-display text-3xl font-semibold text-[#1a241f]">{{ __('site.home.rooms.' . $room['translation_key'] . '_name') }}</h3>
-            <span class="text-sm font-semibold uppercase tracking-[0.18em] text-[#a67b3f]">{{ $room['price'] }}</span>
+            <span class="text-sm font-semibold uppercase tracking-[0.18em] text-[#a67b3f]"><bdi dir="ltr">{{ \App\Support\Currency::formatMad($room['price']) }}</bdi> / {{ __('site.common.per_night') }}</span>
         </div>
 
         <div class="flex flex-wrap gap-3 text-xs font-medium uppercase tracking-[0.16em] text-[#3b4b45]">

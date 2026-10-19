@@ -86,7 +86,7 @@
                 <aside class="h-fit rounded-[2rem] border border-[#e2d3a6] bg-[linear-gradient(135deg,#f7f0e2,#fffdf9)] p-7 shadow-[var(--shadow)] lg:sticky lg:top-8">
                     <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#a67b3f]">{{ __('site.details.stay_label') }}</p>
                     <p class="mt-5 font-display text-5xl font-semibold text-[#122b29]">
-                        <bdi dir="ltr">{{ number_format($room['price'], 0, ',', ' ') }} <span class="text-2xl">MAD</span></bdi>
+                        <bdi dir="ltr">{{ \App\Support\Currency::formatMad($room['price']) }}</bdi>
                     </p>
                     <p class="mt-1 text-sm text-[#6c756e]">{{ __('site.details.per_night') }}</p>
                     <div class="my-6 border-t border-[#e3d5b0]"></div>
