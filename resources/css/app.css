@@ -1,0 +1,120 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', 'Segoe UI', sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+}
+
+:root {
+    --ivory: #f9f5ef;
+    --ivory-strong: #f2ebdf;
+    --green: #122b29;
+    --green-soft: #1f403d;
+    --gold: #c9a76c;
+    --gold-soft: #ebd3a4;
+    --text: #1d2d2a;
+    --muted: #4d5b56;
+    --shadow: 0 22px 55px rgba(18, 42, 38, 0.08);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--ivory);
+    color: var(--text);
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.font-display {
+    font-family: var(--font-display);
+}
+
+.section-shell {
+    width: min(1200px, calc(100% - 2rem));
+    margin-inline: auto;
+}
+
+.section-kicker {
+    margin-bottom: 1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #a67b3f;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 5vw, 5rem);
+    line-height: 0.94;
+    letter-spacing: -0.04em;
+    color: var(--green);
+}
+
+.hero {
+    background: var(--green);
+}
+
+.gold-button,
+.soft-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0.9rem 1.7rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.gold-button {
+    background: linear-gradient(135deg, #d7b777, #b98d4d);
+    color: #112b29;
+    box-shadow: 0 18px 35px rgba(184, 141, 77, 0.28);
+}
+
+.gold-button:hover,
+.soft-button:hover {
+    transform: translateY(-2px);
+}
+
+.soft-button {
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.room-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px rgba(18, 42, 38, 0.12);
+}
+
+@media (max-width: 640px) {
+    .section-kicker {
+        letter-spacing: 0.18em;
+    }
+
+    .gold-button,
+    .soft-button {
+        width: 100%;
+    }
+}
