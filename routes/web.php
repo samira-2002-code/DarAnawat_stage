@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/language/{locale}', function (Request $request, string $locale) {
-    abort_unless(in_array($locale, ['fr', 'en', 'ar'], true), 404);
+    abort_unless(in_array($locale, ['fr', 'en', 'es', 'ar'], true), 404);
 
     $request->session()->put('locale', $locale);
     app()->setLocale($locale);

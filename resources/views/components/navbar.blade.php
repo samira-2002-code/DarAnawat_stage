@@ -20,7 +20,7 @@
 
         <div class="flex items-center gap-3">
             <div class="flex items-center gap-1.5 text-xs font-medium tracking-[0.12em] text-white/80 sm:gap-2" role="group" aria-label="{{ __('navigation.language_selector') }}">
-                @foreach (['fr' => 'FR', 'en' => 'EN', 'ar' => 'AR'] as $locale => $label)
+                @foreach (['fr' => 'FR', 'en' => 'EN', 'es' => 'ES', 'ar' => 'AR'] as $locale => $label)
                     <a href="{{ route('language.switch', ['locale' => $locale]) }}" lang="{{ $locale }}" hreflang="{{ $locale }}" @if (app()->isLocale($locale)) aria-current="page" @endif class="transition hover:text-[#ebd3a4] {{ app()->isLocale($locale) ? 'text-[#ebd3a4]' : '' }}">{{ $label }}</a>
                     @if (! $loop->last)<span aria-hidden="true">|</span>@endif
                 @endforeach
