@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReservationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,11 @@ Route::get('/', function () {
 Route::get('/chambres', function () {
     return view('chambres');
 })->name('chambres');
+
+Route::get('/reservation', [ReservationController::class, 'create'])->name('reservations.create');
+Route::post('/reservation', [ReservationController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('reservations.store');
 
 Route::get('/chambres/{type}', function (string $type) {
     $rooms = [
