@@ -13,7 +13,7 @@
         <div class="flex items-start justify-between gap-3">
             <h3 class="font-display text-3xl font-semibold leading-tight text-[#1a241f]">{{ __('site.rooms.' . $room['slug'] . '.name') }}</h3>
             <p class="shrink-0 text-right text-sm font-semibold tracking-[0.08em] text-[#a67b3f]">
-                {{ number_format($room['price'], 0, ',', ' ') }} MAD
+                <bdi dir="ltr">{{ \App\Support\Currency::formatMad($room['price']) }}</bdi>
                 <span class="mt-1 block text-xs font-medium tracking-normal text-[#6c756e]">{{ __('site.common.per_night') }}</span>
             </p>
         </div>
