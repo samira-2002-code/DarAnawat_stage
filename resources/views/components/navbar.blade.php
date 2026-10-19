@@ -13,6 +13,6 @@
             <a href="#discover" class="transition hover:text-[#ebd3a4]">Morocco</a>
         </div>
 
-        <a href="#cta" class="gold-button hidden sm:inline-flex">Plan Your Stay</a>
+        <a href="#cta" class="gold-button hidden sm:inline-flex">Book Your Escape</a>
     </nav>
 </header>
