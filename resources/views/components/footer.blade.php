@@ -1,4 +1,9 @@
 <footer class="border-t border-[#d9ceb1] bg-[#112b29] text-[#f7f3ed]">
+    @php
+        $homeUrl = route('home');
+        $isHome = request()->routeIs('home');
+    @endphp
+
     <div class="section-shell grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-5">
         <div class="lg:col-span-2">
             <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-[#c9a76c]">Dar Anawat</p>
@@ -11,10 +16,10 @@
         <div>
             <p class="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#c9a76c]">Navigation</p>
             <ul class="space-y-3 text-sm text-[#e7dfd2]">
-                <li><a href="#home" class="transition hover:text-white">Home</a></li>
-                <li><a href="#about" class="transition hover:text-white">About</a></li>
-                <li><a href="#rooms" class="transition hover:text-white">Rooms</a></li>
-                <li><a href="#experiences" class="transition hover:text-white">Experiences</a></li>
+                <li><a href="{{ $isHome ? '#home' : $homeUrl . '#home' }}" class="transition hover:text-white">Home</a></li>
+                <li><a href="{{ $isHome ? '#about' : $homeUrl . '#about' }}" class="transition hover:text-white">About</a></li>
+                <li><a href="{{ route('chambres') }}" class="transition hover:text-white">Rooms</a></li>
+                <li><a href="{{ $isHome ? '#experiences' : $homeUrl . '#experiences' }}" class="transition hover:text-white">Experiences</a></li>
             </ul>
         </div>
 
