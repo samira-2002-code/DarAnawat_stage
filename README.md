@@ -41,7 +41,7 @@ La page Chambres permet aux visiteurs de consulter les différentes chambres pro
 ### Travail réalisé
 - Création de la vue `chambres.blade.php`.
 - Organisation des chambres sous forme de cartes.
-- Création du composant Blade `components/chambre-card.blade.php` pour structurer l’affichage d’une chambre.
+- Réutilisation du composant Blade `components/room-card.blade.php` pour afficher les cartes de chambres.
 - Présentation des informations principales de chaque chambre selon les données disponibles.
 - Mise en place d’un accès à la page de détail depuis chaque carte.
 - Utilisation de données fictives pour faciliter le développement et la présentation de l’interface.
@@ -81,7 +81,7 @@ resources/
     ├── components/
     │   ├── navbar.blade.php
     │   ├── footer.blade.php
-    │   └── chambre-card.blade.php
+    │   └── room-card.blade.php
     ├── layouts/
     │   └── app.blade.php
     ├── chambres.blade.php
@@ -118,7 +118,7 @@ Le composant `footer.blade.php` contient le pied de page et les informations com
 Le fichier `layouts/app.blade.php` permet de définir une structure commune aux pages qui l’utilisent, afin de conserver une présentation homogène et de limiter la répétition du code.
 
 ### Carte de chambre
-Le composant `chambre-card.blade.php` permet de réutiliser la même structure visuelle pour présenter les différentes chambres.
+Le composant `room-card.blade.php` permet de réutiliser la même structure visuelle pour présenter les différentes chambres sur les pages du site.
 
 ## 9. Tests
 
