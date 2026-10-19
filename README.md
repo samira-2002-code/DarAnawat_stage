@@ -1,59 +1,157 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Dar Anawat – Site Web de Riad
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 1. Présentation du projet
 
-## About Laravel
+Dar Anawat est un site web destiné à présenter un riad et ses chambres aux visiteurs. L’objectif est de proposer une interface simple, élégante et facile à utiliser, permettant aux utilisateurs de découvrir le riad, consulter les chambres disponibles et accéder aux détails de chaque chambre.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Ce projet est développé avec Laravel et Blade, en utilisant HTML, CSS et JavaScript pour la structure et la présentation des pages.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 2. Technologies utilisées
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Laravel :** framework PHP utilisé pour organiser le projet et gérer les routes.
+- **PHP :** langage utilisé pour la partie serveur.
+- **Blade :** moteur de templates Laravel pour créer les pages dynamiques.
+- **HTML5 :** structure des pages web.
+- **CSS3 :** mise en forme et design de l’interface.
+- **JavaScript :** ajout éventuel d’interactions côté client.
+- **Git et GitHub :** gestion des versions et partage du code source.
 
-## Learning Laravel
+## 3. Page d’accueil (Home Page)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Objectif
+La page d’accueil est la première page visible par les visiteurs. Elle permet de présenter le riad et de donner une première impression de son identité et de son ambiance.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Travail réalisé
+- Création de la structure générale de la page d’accueil.
+- Organisation des différentes sections pour faciliter la navigation.
+- Mise en place d’une interface visuelle adaptée à un site de riad.
+- Intégration de la barre de navigation (Navbar).
+- Intégration du pied de page (Footer).
+- Préparation de la navigation vers les autres pages du site.
+- Utilisation de données fictives lorsque cela est nécessaire pour la présentation.
 
-## Laravel Sponsors
+### Résultat attendu
+Une page d’accueil claire et accueillante qui permet aux visiteurs de découvrir le riad et d’accéder facilement à la page des chambres.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 4. Page Chambres
 
-### Premium Partners
+### Objectif
+La page Chambres permet aux visiteurs de consulter les différentes chambres proposées par le riad.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Travail réalisé
+- Création de la vue `chambres.blade.php`.
+- Organisation des chambres sous forme de cartes.
+- Création du composant Blade `components/chambre-card.blade.php` pour structurer l’affichage d’une chambre.
+- Présentation des informations principales de chaque chambre selon les données disponibles.
+- Mise en place d’un accès à la page de détail depuis chaque carte.
+- Utilisation de données fictives pour faciliter le développement et la présentation de l’interface.
+- Intégration de la navigation commune avec la Navbar et le Footer.
 
-## Contributing
+### Résultat attendu
+Une page qui permet aux visiteurs de parcourir les chambres et de sélectionner celle qu’ils souhaitent découvrir plus en détail.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 5. Page Détail d’une chambre
 
-## Code of Conduct
+### Objectif
+La page Détail permet de consulter les informations relatives à une chambre sélectionnée depuis la page Chambres.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Travail réalisé
+- Création de la vue `chambre-details.blade.php`.
+- Préparation d’une page dédiée à la présentation détaillée d’une chambre.
+- Organisation des informations pour faciliter la lecture.
+- Préparation de la navigation entre la liste des chambres et leurs pages de détail.
+- Mise en place de la route permettant d’accéder au détail d’une chambre, selon son type.
+- Réutilisation des éléments communs du site pour conserver une présentation cohérente.
 
-## Security Vulnerabilities
+### Résultat attendu
+Une page permettant au visiteur d’obtenir davantage d’informations sur une chambre avant de poursuivre éventuellement vers une réservation.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 6. Organisation des fichiers
 
-## License
+Les principaux fichiers concernés par le développement sont :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```text
+app/
+└── Http/
+    └── Controllers/
+        └── Controller.php
+
+resources/
+└── views/
+    ├── components/
+    │   ├── navbar.blade.php
+    │   ├── footer.blade.php
+    │   └── chambre-card.blade.php
+    ├── layouts/
+    │   └── app.blade.php
+    ├── chambres.blade.php
+    └── chambre-details.blade.php
+
+routes/
+└── web.php
+
+tests/
+└── Feature/
+    └── ChambresTest.php
+```
+
+## 7. Gestion des routes
+
+Le fichier `routes/web.php` est utilisé pour définir les routes permettant d’accéder aux différentes pages du site.
+
+Les routes concernées comprennent notamment :
+- La page d’accueil.
+- La page listant les chambres.
+- La page affichant les détails d’une chambre à partir de son type.
+
+Les URL exactes et les noms des routes dépendent de leur définition dans le fichier `web.php`.
+
+## 8. Composants et layout communs
+
+### Navbar
+Le composant `navbar.blade.php` contient la barre de navigation commune, qui facilite l’accès aux différentes sections du site.
+
+### Footer
+Le composant `footer.blade.php` contient le pied de page et les informations communes affichées en bas des pages.
+
+### Layout principal
+Le fichier `layouts/app.blade.php` permet de définir une structure commune aux pages qui l’utilisent, afin de conserver une présentation homogène et de limiter la répétition du code.
+
+### Carte de chambre
+Le composant `chambre-card.blade.php` permet de réutiliser la même structure visuelle pour présenter les différentes chambres.
+
+## 9. Tests
+
+Un fichier `tests/Feature/ChambresTest.php` a été ajouté pour préparer ou regrouper les tests fonctionnels concernant les pages des chambres.
+
+Les tests peuvent notamment vérifier que les routes répondent correctement et que les pages attendues sont accessibles.
+
+## 10. État d’avancement
+
+Les travaux réalisés concernent principalement la partie interface et navigation :
+
+- Page d’accueil.
+- Page Chambres.
+- Page Détail d’une chambre.
+- Composants Navbar, Footer et carte de chambre.
+- Organisation des vues avec Blade.
+- Configuration des routes associées.
+- Préparation de tests fonctionnels.
+
+Les données présentées peuvent être fictives et devront être remplacées ou connectées aux données réelles lorsque la partie correspondante sera développée.
+
+## 11. Prochaines étapes
+
+Les prochaines améliorations possibles sont :
+
+- Finaliser l’affichage des détails de chaque chambre.
+- Connecter les pages à une base de données.
+- Développer la page de réservation.
+- Mettre en place le formulaire de réservation.
+- Développer la partie paiement si elle est prévue dans le projet.
+- Ajouter des validations et des tests supplémentaires.
+- Améliorer le responsive design pour les téléphones et les tablettes.
+
+## Conclusion
+
+Le travail réalisé constitue une première étape dans le développement du site web Dar Anawat. Il permet de structurer les principales pages de présentation du riad et de préparer la navigation entre l’accueil, la liste des chambres et leurs détails. Cette base pourra ensuite être complétée par les fonctionnalités de réservation et la connexion aux données réelles.
