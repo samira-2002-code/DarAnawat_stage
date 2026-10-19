@@ -25,7 +25,7 @@
                     @if (! $loop->last)<span aria-hidden="true">|</span>@endif
                 @endforeach
             </div>
-            <a href="{{ $isHome ? '#cta' : $homeUrl . '#cta' }}" class="gold-button hidden sm:inline-flex">{{ __('navigation.book') }}</a>
+            <a href="{{ route('reservations.create') }}" class="gold-button hidden sm:inline-flex">{{ __('navigation.book') }}</a>
         </div>
     </nav>
 </header>

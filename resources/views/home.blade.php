@@ -186,7 +186,7 @@
                     {{ __('site.home.cta.description') }}
                 </p>
                 <div class="mt-10 flex justify-center">
-                    <a href="{{ route('chambres') }}" class="gold-button">{{ __('site.home.cta.button') }}</a>
+                    <a href="{{ route('reservations.create') }}" class="gold-button">{{ __('site.home.cta.button') }}</a>
                 </div>
             </div>
         </section>

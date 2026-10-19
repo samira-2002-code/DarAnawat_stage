@@ -122,6 +122,22 @@ html[lang="ar"] .font-display {
     box-shadow: 0 30px 60px rgba(18, 42, 38, 0.12);
 }
 
+.form-field {
+    width: 100%;
+    min-height: 3.25rem;
+    border: 1px solid #d8cfbf;
+    border-radius: 0.85rem;
+    background: #fff;
+    padding: 0.75rem 0.9rem;
+    color: var(--text);
+}
+
+.form-field:focus {
+    border-color: #a67b3f;
+    outline: 2px solid rgba(201, 167, 108, 0.25);
+    outline-offset: 1px;
+}
+
 @media (max-width: 640px) {
     .section-kicker {
         letter-spacing: 0.18em;

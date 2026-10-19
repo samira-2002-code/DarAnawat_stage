@@ -93,7 +93,7 @@
                     <p class="mb-5 text-sm leading-6 text-[#4d5b56]">
                         {{ __('site.details.booking_description') }}
                     </p>
-                    <a href="mailto:hello@daranawat.ma?subject={{ urlencode(__('site.details.email_subject') . ' - ' . __('site.rooms.' . $room['slug'] . '.name')) }}" class="gold-button w-full">
+                    <a href="{{ route('reservations.create', ['room' => $room['slug']]) }}" class="gold-button w-full">
                         {{ __('site.details.reserve') }}
                     </a>
                     <p class="mt-4 text-center text-xs leading-5 text-[#6c756e]">{{ __('site.details.booking_note') }}</p>
