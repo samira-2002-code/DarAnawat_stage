@@ -122,36 +122,45 @@ Le composant `room-card.blade.php` permet de réutiliser la même structure visu
 
 ## 9. Tests
 
-Un fichier `tests/Feature/ChambresTest.php` a été ajouté pour préparer ou regrouper les tests fonctionnels concernant les pages des chambres.
+Les tests fonctionnels couvrent les pages de chambres et les demandes de réservation. Ils vérifient les champs, les dates, la capacité et l’enregistrement des demandes en attente.
 
-Les tests peuvent notamment vérifier que les routes répondent correctement et que les pages attendues sont accessibles.
+Pour exécuter tous les tests :
+
+```bash
+php artisan test
+```
 
 ## 10. État d’avancement
 
-Les travaux réalisés concernent principalement la partie interface et navigation :
+Le projet comprend désormais :
 
 - Page d’accueil.
 - Page Chambres.
 - Page Détail d’une chambre.
+- Formulaire de demande de réservation relié à Laravel.
+- Enregistrement en base des demandes en attente de vérification.
+- Validation serveur des coordonnées, des dates et de la capacité des chambres.
+- Interface de réservation traduite en français, anglais, espagnol et arabe.
 - Composants Navbar, Footer et carte de chambre.
-- Organisation des vues avec Blade.
-- Configuration des routes associées.
-- Préparation de tests fonctionnels.
 
-Les données présentées peuvent être fictives et devront être remplacées ou connectées aux données réelles lorsque la partie correspondante sera développée.
+Les demandes ne confirment pas la disponibilité : le projet ne contient pas encore d’inventaire des chambres ni d’interface d’administration pour confirmer ou refuser une demande.
 
-## 11. Prochaines étapes
+## 11. Base de données locale
 
-Les prochaines améliorations possibles sont :
+SQLite est configuré par défaut dans `.env.example`, donc XAMPP/MySQL n’est pas obligatoire. Sous PowerShell, après l’installation des dépendances, préparez votre environnement et appliquez les migrations :
 
-- Finaliser l’affichage des détails de chaque chambre.
-- Connecter les pages à une base de données.
-- Développer la page de réservation.
-- Mettre en place le formulaire de réservation.
-- Développer la partie paiement si elle est prévue dans le projet.
-- Ajouter des validations et des tests supplémentaires.
-- Améliorer le responsive design pour les téléphones et les tablettes.
+```powershell
+composer install
+npm ci
+npm run build
+Copy-Item .env.example .env
+php artisan key:generate
+if (-not (Test-Path database\database.sqlite)) { New-Item database\database.sqlite -ItemType File }
+php artisan migrate
+```
+
+Les tests utilisent SQLite en mémoire et ne modifient pas votre base locale.
 
 ## Conclusion
 
-Le travail réalisé constitue une première étape dans le développement du site web Dar Anawat. Il permet de structurer les principales pages de présentation du riad et de préparer la navigation entre l’accueil, la liste des chambres et leurs détails. Cette base pourra ensuite être complétée par les fonctionnalités de réservation et la connexion aux données réelles.
+Le site permet aux visiteurs d’envoyer une demande de séjour enregistrée en base. L’équipe doit vérifier la disponibilité avant toute confirmation ; aucun paiement en ligne n’est proposé.
