@@ -33,7 +33,7 @@
                 <li>
                     <a href="mailto:www.dar.ennawat@gmail.com" class="break-words transition hover:text-white">www.dar.ennawat@gmail.com</a>
                 </li>
-                <li>{{ __('site.footer.location') }}</li>
+                <li><span dir="ltr">{{ __('site.footer.location') }}</span></li>
             </ul>
         </div>
 

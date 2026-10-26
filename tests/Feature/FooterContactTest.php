@@ -14,6 +14,7 @@ class FooterContactTest extends TestCase
             ->assertSee('+212 763-099428')
             ->assertSee('href="mailto:www.dar.ennawat@gmail.com"', false)
             ->assertSee('www.dar.ennawat@gmail.com')
+            ->assertSee('48 Derb Jamaa, Rue Riad Zitoun el Kdim, Marrakech 40000, Morocco')
             ->assertSee('href="https://www.instagram.com/riaddarennawat/" target="_blank" rel="noopener noreferrer"', false)
             ->assertSee('href="https://wa.me/212763099428" target="_blank" rel="noopener noreferrer"', false)
             ->assertSee('id="contact"', false);
@@ -32,7 +33,8 @@ class FooterContactTest extends TestCase
                 ->assertOk()
                 ->assertSee($navigation)
                 ->assertSee($whatsapp)
-                ->assertSee($instagram);
+                ->assertSee($instagram)
+                ->assertSee('48 Derb Jamaa, Rue Riad Zitoun el Kdim, Marrakech 40000, Morocco');
         }
     }
 }
