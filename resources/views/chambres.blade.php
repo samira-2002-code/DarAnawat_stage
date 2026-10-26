@@ -1,38 +1,3 @@
-@php
-    $rooms = [
-        [
-            'slug' => 'single',
-            'name' => 'Chambre Single',
-            'price' => 790,
-            'description' => 'Un cocon chaleureux et paisible, idéal pour un séjour en toute simplicité.',
-            'capacity' => '1 personne',
-            'bed' => 'Lit simple',
-            'surface' => '18 m²',
-            'image' => asset('images/rooms/atlas.jpg'),
-        ],
-        [
-            'slug' => 'double',
-            'name' => 'Chambre Double',
-            'price' => 1090,
-            'description' => 'Une chambre lumineuse et confortable, parfaite pour un séjour à deux.',
-            'capacity' => '2 personnes',
-            'bed' => 'Lit queen size',
-            'surface' => '24 m²',
-            'image' => asset('images/rooms/palm.jpg'),
-        ],
-        [
-            'slug' => 'suite',
-            'name' => 'Suite Dar Anawat',
-            'price' => 1690,
-            'description' => 'Un espace raffiné et spacieux, pensé pour une expérience unique à Dar Anawat.',
-            'capacity' => 'Jusqu’à 4 personnes',
-            'bed' => 'Lit king size et canapé-lit',
-            'surface' => '38 m²',
-            'image' => asset('images/rooms/suite.jpg'),
-        ],
-    ];
-@endphp
-
 @extends('layouts.app')
 
 @section('title', __('site.meta.rooms_title'))
@@ -66,7 +31,7 @@
                     <h2 class="section-title px-3 text-4xl leading-tight md:text-6xl">{{ __('site.chambres.section_title') }}</h2>
                 </div>
 
-                <div class="mt-12 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
+                <div class="mt-12 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4 xl:gap-8">
                     @foreach ($rooms as $room)
                         <x-room-card :room="$room" />
                     @endforeach

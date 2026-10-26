@@ -1,55 +1,27 @@
 @php
-    $rooms = [
-        [
-            'translation_key' => 'atlas',
-            'name' => 'Atlas Room',
-            'price' => '950 MAD / night',
-            'guests' => 2,
-            'bed' => 'King Bed',
-            'description' => 'Elegant room inspired by the colors and landscapes of Morocco.',
-            'image' => asset('images/rooms/atlas.jpg'),
-        ],
-        [
-            'translation_key' => 'palm',
-            'name' => 'Palm Room',
-            'price' => '1150 MAD / night',
-            'guests' => 2,
-            'bed' => 'Queen Bed',
-            'description' => 'A warm and peaceful room combining Moroccan details with modern comfort.',
-            'image' => asset('images/rooms/palm.jpg'),
-        ],
-        [
-            'translation_key' => 'suite',
-            'name' => 'Anawat Suite',
-            'price' => '1650 MAD / night',
-            'guests' => 4,
-            'bed' => 'King Bed + Sofa Bed',
-            'description' => 'A spacious private suite designed for an unforgettable Moroccan escape.',
-            'image' => asset('images/rooms/suite.jpg'),
-        ],
-    ];
+    $rooms = \App\Support\RoomCatalog::all();
 
     $experiences = [
         [
-            'icon' => 'R',
+            'icon' => '↗',
             'title' => __('site.home.experiences.relax.title'),
             'heading' => __('site.home.experiences.relax.heading'),
             'description' => __('site.home.experiences.relax.description'),
         ],
         [
-            'icon' => 'D',
+            'icon' => '✦',
             'title' => __('site.home.experiences.discover.title'),
             'heading' => __('site.home.experiences.discover.heading'),
             'description' => __('site.home.experiences.discover.description'),
         ],
         [
-            'icon' => 'T',
+            'icon' => '♡',
             'title' => __('site.home.experiences.taste.title'),
             'heading' => __('site.home.experiences.taste.heading'),
             'description' => __('site.home.experiences.taste.description'),
         ],
         [
-            'icon' => 'E',
+            'icon' => '⌖',
             'title' => __('site.home.experiences.escape.title'),
             'heading' => __('site.home.experiences.escape.heading'),
             'description' => __('site.home.experiences.escape.description'),
@@ -120,7 +92,7 @@
                     <h2 class="section-title">{{ __('site.home.rooms.title') }}</h2>
                 </div>
 
-                <div class="mt-12 grid gap-8 lg:grid-cols-3">
+                <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
                     @foreach ($rooms as $room)
                         <x-room-card :room="$room" />
                     @endforeach
@@ -132,6 +104,9 @@
             <div class="mx-auto max-w-3xl text-center">
                 <p class="section-kicker">{{ __('site.home.experiences.kicker') }}</p>
                 <h2 class="section-title">{{ __('site.home.experiences.title') }}</h2>
+                <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#4d5b56]">
+                    {{ __('site.home.experiences.intro') }}
+                </p>
             </div>
 
             <div class="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-4">

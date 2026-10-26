@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReservationRequest;
 use App\Models\Reservation;
+use App\Support\RoomCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -21,7 +22,7 @@ class ReservationController extends Controller
         );
 
         return view('reservations.create', [
-            'rooms' => array_keys(Reservation::ROOM_CAPACITIES),
+            'rooms' => RoomCatalog::all(),
             'selectedRoom' => $selectedRoom,
         ]);
     }

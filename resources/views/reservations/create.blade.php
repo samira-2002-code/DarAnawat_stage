@@ -70,8 +70,8 @@
                                 <select id="room_type" name="room_type" required data-room-select aria-describedby="room_type_error" @class(['form-field', 'border-red-500' => $errors->has('room_type')])>
                                     <option value="">{{ __('site.reservation.choose_room') }}</option>
                                     @foreach ($rooms as $room)
-                                        <option value="{{ $room }}" data-capacity="{{ \App\Models\Reservation::ROOM_CAPACITIES[$room] }}" @selected(old('room_type', $selectedRoom) === $room)>
-                                            {{ __('site.rooms.' . $room . '.name') }}
+                                        <option value="{{ $room['slug'] }}" data-capacity="{{ $room['capacity'] }}" @selected(old('room_type', $selectedRoom) === $room['slug'])>
+                                            {{ __('site.rooms.' . $room['slug'] . '.name') }} — {{ __('site.common.price_format', ['price' => \App\Support\Currency::formatDh($room['price'])]) }}
                                         </option>
                                     @endforeach
                                 </select>
