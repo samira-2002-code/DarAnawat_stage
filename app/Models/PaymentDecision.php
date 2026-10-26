@@ -13,6 +13,8 @@ class PaymentDecision extends Model
 
     public const ACTION_NOT_RECEIVED = 'not_received';
 
+    public const ACTION_RESERVATION_CONFIRMED = 'reservation_confirmed';
+
     protected $fillable = [
         'payment_id',
         'administrator_id',

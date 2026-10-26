@@ -38,6 +38,14 @@
                             @if ($receipt->review_reason)
                                 <span class="text-[#6c756e]">{{ $receipt->review_reason }}</span>
                             @endif
+                            @if ($receipt->status === 'submitted' && in_array($reservation->payment->status, ['awaiting_transfer', 'reported'], true))
+                                <form action="{{ route('owner.receipts.reject', $receipt) }}" method="POST" class="flex flex-wrap items-center gap-2">
+                                    @csrf
+                                    <label class="sr-only" for="reason-{{ $receipt->getKey() }}">{{ __('site.owner.reason') }}</label>
+                                    <input id="reason-{{ $receipt->getKey() }}" name="reason" required minlength="3" maxlength="1000" class="form-field min-w-48" placeholder="{{ __('site.owner.reason') }}">
+                                    <button type="submit" class="rounded-full border border-[#a64b3c] px-4 py-2 text-xs font-semibold text-[#8a352b]">{{ __('site.owner.reject_receipt') }}</button>
+                                </form>
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -60,6 +68,40 @@
                 </details>
             @endif
 
+            @if ($reservation->status === 'pending' && in_array($reservation->payment->status, ['awaiting_transfer', 'reported'], true))
+                <div class="mt-5 grid gap-4 border-t border-[#e7ddca] pt-5 lg:grid-cols-2">
+                    <form action="{{ route('owner.payments.verify', $reservation->payment) }}" method="POST" class="space-y-3 rounded-xl bg-[#edf7ef] p-4">
+                        @csrf
+                        <p class="text-sm font-semibold text-[#204d30]">{{ __('site.owner.verify_warning') }}</p>
+                        <label class="flex items-start gap-2 text-sm">
+                            <input name="funds_received" type="checkbox" value="1" required class="mt-1">
+                            <span>{{ __('site.owner.funds_received') }}</span>
+                        </label>
+                        <button type="submit" class="gold-button">{{ __('site.owner.verify_payment') }}</button>
+                    </form>
+
+                    <form action="{{ route('owner.payments.not-received', $reservation->payment) }}" method="POST" class="space-y-3 rounded-xl bg-[#fff1ef] p-4">
+                        @csrf
+                        <label class="block text-sm font-semibold" for="not-received-{{ $reservation->payment->getKey() }}">{{ __('site.owner.reason') }}</label>
+                        <textarea id="not-received-{{ $reservation->payment->getKey() }}" name="reason" required minlength="3" maxlength="1000" rows="2" class="form-field"></textarea>
+                        <button type="submit" class="rounded-full border border-[#a64b3c] px-5 py-3 text-sm font-semibold text-[#8a352b]">{{ __('site.owner.mark_not_received') }}</button>
+                    </form>
+                </div>
+            @endif
+
+            @if ($reservation->status === 'pending' && $reservation->payment->status === 'verified')
+                <form action="{{ route('owner.reservations.confirm', $reservation) }}" method="POST" class="mt-5 space-y-3 border-t border-[#e7ddca] pt-5">
+                    @csrf
+                    <p class="text-sm font-semibold">{{ __('site.owner.confirm_warning') }}</p>
+                    <label class="flex items-start gap-2 text-sm">
+                        <input name="availability_confirmed" type="checkbox" value="1" required class="mt-1">
+                        <span>{{ __('site.owner.availability_confirmed') }}</span>
+                    </label>
+                    <label class="block text-sm font-semibold" for="confirm-reason-{{ $reservation->getKey() }}">{{ __('site.owner.confirm_note') }}</label>
+                    <textarea id="confirm-reason-{{ $reservation->getKey() }}" name="reason" maxlength="1000" rows="2" class="form-field"></textarea>
+                    <button type="submit" class="gold-button">{{ __('site.owner.confirm_reservation') }}</button>
+                </form>
+            @endif
         </div>
     @endif
 </article>

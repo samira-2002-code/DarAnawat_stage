@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OwnerDashboardController;
+use App\Http\Controllers\OwnerPaymentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Http\Request;
@@ -64,6 +65,10 @@ Route::middleware('auth')->prefix('account')->name('payments.')->group(function 
 
 Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(function () {
     Route::get('/', [OwnerDashboardController::class, 'index'])->name('dashboard');
+    Route::post('/payments/{payment}/verify', [OwnerPaymentController::class, 'verify'])->name('payments.verify');
+    Route::post('/receipts/{receipt}/reject', [OwnerPaymentController::class, 'rejectReceipt'])->name('receipts.reject');
+    Route::post('/payments/{payment}/not-received', [OwnerPaymentController::class, 'markNotReceived'])->name('payments.not-received');
+    Route::post('/reservations/{reservation}/confirm', [OwnerPaymentController::class, 'confirmReservation'])->name('reservations.confirm');
     Route::get('/receipts/{receipt}', [OwnerDashboardController::class, 'downloadReceipt'])->name('receipts.download');
 });
 
