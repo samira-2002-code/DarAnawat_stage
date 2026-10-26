@@ -3,7 +3,7 @@
         [
             'translation_key' => 'atlas',
             'name' => 'Atlas Room',
-            'price' => '950 MAD / night',
+            'price' => config('rooms.rates_mad.single'),
             'guests' => 2,
             'bed' => 'King Bed',
             'description' => 'Elegant room inspired by the colors and landscapes of Morocco.',
@@ -12,7 +12,7 @@
         [
             'translation_key' => 'palm',
             'name' => 'Palm Room',
-            'price' => '1150 MAD / night',
+            'price' => config('rooms.rates_mad.double'),
             'guests' => 2,
             'bed' => 'Queen Bed',
             'description' => 'A warm and peaceful room combining Moroccan details with modern comfort.',
@@ -21,7 +21,7 @@
         [
             'translation_key' => 'suite',
             'name' => 'Anawat Suite',
-            'price' => '1650 MAD / night',
+            'price' => config('rooms.rates_mad.suite'),
             'guests' => 4,
             'bed' => 'King Bed + Sofa Bed',
             'description' => 'A spacious private suite designed for an unforgettable Moroccan escape.',

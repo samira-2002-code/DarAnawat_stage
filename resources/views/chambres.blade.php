@@ -3,7 +3,7 @@
         [
             'slug' => 'single',
             'name' => 'Chambre Single',
-            'price' => 790,
+            'price' => config('rooms.rates_mad.single'),
             'description' => 'Un cocon chaleureux et paisible, idéal pour un séjour en toute simplicité.',
             'capacity' => '1 personne',
             'bed' => 'Lit simple',
@@ -13,7 +13,7 @@
         [
             'slug' => 'double',
             'name' => 'Chambre Double',
-            'price' => 1090,
+            'price' => config('rooms.rates_mad.double'),
             'description' => 'Une chambre lumineuse et confortable, parfaite pour un séjour à deux.',
             'capacity' => '2 personnes',
             'bed' => 'Lit queen size',
@@ -23,7 +23,7 @@
         [
             'slug' => 'suite',
             'name' => 'Suite Dar Anawat',
-            'price' => 1690,
+            'price' => config('rooms.rates_mad.suite'),
             'description' => 'Un espace raffiné et spacieux, pensé pour une expérience unique à Dar Anawat.',
             'capacity' => 'Jusqu’à 4 personnes',
             'bed' => 'Lit king size et canapé-lit',

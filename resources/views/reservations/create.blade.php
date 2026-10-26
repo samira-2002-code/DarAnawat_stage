@@ -25,6 +25,45 @@
                     <div class="mb-8 rounded-2xl border border-[#b8d5c0] bg-[#edf7ef] p-5 text-sm leading-6 text-[#204d30]" role="status">
                         {{ session('reservation_success') }}
                     </div>
+
+                    <section class="mb-8 rounded-2xl border border-[#e7ddca] bg-[#f9f5ef] p-5 sm:p-6" aria-labelledby="payment-title">
+                        <h2 id="payment-title" class="font-display text-2xl text-[#122b29]">
+                            {{ __('site.reservation.payment.title') }}
+                        </h2>
+                        <p class="mt-3 text-sm leading-6 text-[#4d5b56]">
+                            {{ __('site.reservation.payment.instructions') }}
+                        </p>
+                        <dl class="mt-5 space-y-4 text-sm">
+                            @if (session('reservation_amount_mad'))
+                                <div>
+                                    <dt class="font-semibold text-[#122b29]">{{ __('site.reservation.payment.amount') }}</dt>
+                                    <dd class="mt-1 font-semibold"><bdi dir="ltr">{{ \App\Support\Currency::formatMad(session('reservation_amount_mad'), 'fr') }}</bdi></dd>
+                                </div>
+                            @endif
+                            <div>
+                                <dt class="font-semibold text-[#122b29]">{{ __('site.reservation.payment.bank') }}</dt>
+                                <dd class="mt-1">{{ config('payment.bank_name') }}</dd>
+                            </div>
+                            <div>
+                                <dt class="font-semibold text-[#122b29]">{{ __('site.reservation.payment.rib') }}</dt>
+                                <dd class="mt-1 break-all font-mono text-base tracking-wide" data-rib-value>{{ config('payment.rib') }}</dd>
+                            </div>
+                        </dl>
+                        <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <button
+                                type="button"
+                                class="gold-button"
+                                data-copy-rib
+                                data-rib="{{ config('payment.rib') }}"
+                            >
+                                {{ __('site.reservation.payment.copy_rib') }}
+                            </button>
+                            <span class="text-sm text-[#4d5b56]" data-copy-rib-status aria-live="polite"></span>
+                        </div>
+                        <p class="mt-5 rounded-xl bg-white p-4 text-sm leading-6 text-[#4d5b56]">
+                            {{ __('site.reservation.payment.pending_verification') }}
+                        </p>
+                    </section>
                 @endif
 
                 @if ($errors->any())
@@ -123,6 +162,7 @@
         const checkInInput = document.querySelector('[data-check-in]');
         const checkOutInput = document.querySelector('[data-check-out]');
         const submitButton = document.querySelector('[data-submit-button]');
+        const copyRibButton = document.querySelector('[data-copy-rib]');
 
         const updateGuestCapacity = () => {
             const capacity = roomSelect.selectedOptions[0].dataset.capacity;
@@ -156,5 +196,39 @@
             submitButton.querySelector('[data-submit-label]').textContent = @js(__('site.reservation.submitting'));
             document.querySelector('[data-submit-status]').textContent = @js(__('site.reservation.submitting'));
         });
+
+        const copyText = async (text) => {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return;
+            }
+
+            const temporaryInput = document.createElement('textarea');
+            temporaryInput.value = text;
+            temporaryInput.setAttribute('readonly', '');
+            temporaryInput.style.position = 'fixed';
+            temporaryInput.style.opacity = '0';
+            document.body.append(temporaryInput);
+            temporaryInput.select();
+            const copied = document.execCommand('copy');
+            temporaryInput.remove();
+
+            if (!copied) {
+                throw new Error('Clipboard copy failed.');
+            }
+        };
+
+        if (copyRibButton) {
+            copyRibButton.addEventListener('click', async () => {
+                const status = document.querySelector('[data-copy-rib-status]');
+
+                try {
+                    await copyText(copyRibButton.dataset.rib);
+                    status.textContent = @js(__('site.reservation.payment.copy_success'));
+                } catch {
+                    status.textContent = @js(__('site.reservation.payment.copy_error'));
+                }
+            });
+        }
     </script>
 @endsection

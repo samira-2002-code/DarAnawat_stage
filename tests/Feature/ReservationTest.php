@@ -19,6 +19,7 @@ class ReservationTest extends TestCase
             ->assertSee('name="check_in"', false)
             ->assertSee('name="check_out"', false)
             ->assertSee('name="guests"', false)
+            ->assertDontSee(config('payment.rib'))
             ->assertSee(route('reservations.store'));
 
         $this->get(route('chambre.details', ['type' => 'double']))
@@ -43,10 +44,25 @@ class ReservationTest extends TestCase
                 'guests' => 2,
                 'special_requests' => 'Late arrival',
                 'status' => 'confirmed',
+                'amount_mad' => 1,
+                'payment_status' => 'verified',
             ]);
 
         $response->assertRedirect(route('reservations.create'))
             ->assertSessionHas('reservation_success');
+
+        $this->get(route('reservations.create'))
+            ->assertOk()
+            ->assertSee(config('payment.bank_name'))
+            ->assertSee(config('payment.rib'))
+            ->assertSee(__('site.reservation.payment.copy_rib'))
+            ->assertSee(__('site.reservation.payment.pending_verification'));
+
+        $this->assertDatabaseHas('payments', [
+            'reservation_id' => Reservation::query()->value('id'),
+            'amount_mad' => 3270,
+            'status' => 'awaiting_transfer',
+        ]);
 
         $this->assertDatabaseHas('reservations', [
             'user_id' => null,
@@ -57,6 +73,11 @@ class ReservationTest extends TestCase
             'check_out' => $departure.' 00:00:00',
             'guests' => 2,
             'status' => 'pending',
+        ]);
+        $this->assertDatabaseHas('payments', [
+            'reservation_id' => Reservation::query()->value('id'),
+            'amount_mad' => 3270,
+            'status' => 'awaiting_transfer',
         ]);
     }
 

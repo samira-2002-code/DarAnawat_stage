@@ -34,10 +34,10 @@ class CurrencyDisplayTest extends TestCase
     public function test_room_prices_use_the_same_currency_on_rooms_and_details_pages(): void
     {
         $expected = [
-            'fr' => ['rooms_url' => '/chambres', 'rooms' => ['790 MAD', '1 090 MAD', '1 690 MAD'], 'detail_url' => '/chambres/double', 'detail_price' => '1 090 MAD', 'home' => ['950 MAD', '1 150 MAD', '1 650 MAD']],
-            'en' => ['rooms_url' => '/chambres', 'rooms' => ['73 EUR', '100 EUR', '155 EUR'], 'detail_url' => '/chambres/double', 'detail_price' => '100 EUR', 'home' => ['87 EUR', '106 EUR', '152 EUR']],
-            'es' => ['rooms_url' => '/chambres', 'rooms' => ['73 EUR', '100 EUR', '155 EUR'], 'detail_url' => '/chambres/double', 'detail_price' => '100 EUR', 'home' => ['87 EUR', '106 EUR', '152 EUR']],
-            'ar' => ['rooms_url' => '/chambres', 'rooms' => ['790 MAD', '1 090 MAD', '1 690 MAD'], 'detail_url' => '/chambres/double', 'detail_price' => '1 090 MAD', 'home' => ['950 MAD', '1 150 MAD', '1 650 MAD']],
+            'fr' => ['rooms_url' => '/chambres', 'rooms' => ['790 MAD', '1 090 MAD', '1 690 MAD'], 'detail_url' => '/chambres/double', 'detail_price' => '1 090 MAD', 'home' => ['790 MAD', '1 090 MAD', '1 690 MAD']],
+            'en' => ['rooms_url' => '/chambres', 'rooms' => ['73 EUR', '100 EUR', '155 EUR'], 'detail_url' => '/chambres/double', 'detail_price' => '100 EUR', 'home' => ['73 EUR', '100 EUR', '155 EUR']],
+            'es' => ['rooms_url' => '/chambres', 'rooms' => ['73 EUR', '100 EUR', '155 EUR'], 'detail_url' => '/chambres/double', 'detail_price' => '100 EUR', 'home' => ['73 EUR', '100 EUR', '155 EUR']],
+            'ar' => ['rooms_url' => '/chambres', 'rooms' => ['790 MAD', '1 090 MAD', '1 690 MAD'], 'detail_url' => '/chambres/double', 'detail_price' => '1 090 MAD', 'home' => ['790 MAD', '1 090 MAD', '1 690 MAD']],
         ];
 
         foreach ($expected as $locale => $prices) {
