@@ -21,7 +21,10 @@ class ChambresTest extends TestCase
             ->assertSee('1 500 DH')
             ->assertSee('Voir les détails')
             ->assertSee('Réserver')
-            ->assertSee('CHAMBRES');
+            ->assertSee('CHAMBRES')
+            ->assertDontSee('18 m²')
+            ->assertDontSee('24 m²')
+            ->assertDontSee('38 m²');
     }
 
     public function test_room_cards_link_to_their_detail_pages(): void
@@ -50,15 +53,25 @@ class ChambresTest extends TestCase
             ->assertSee('Wi-Fi gratuit')
             ->assertSee('Télévision')
             ->assertSee('Réserver')
-            ->assertSee('Chambre Double');
+            ->assertSee('Chambre Double')
+            ->assertDontSee('18 m²')
+            ->assertDontSee('24 m²')
+            ->assertDontSee('38 m²');
     }
 
     public function test_each_supported_room_type_has_a_detail_page(): void
     {
-        foreach (['double' => 'Chambre Double', 'triple' => 'Chambre Triple', 'suite' => 'Suite'] as $type => $name) {
-            $this->get('/chambres/' . $type)
+        foreach ([
+            'single' => 'Chambre Single',
+            'double' => 'Chambre Double',
+            'triple' => 'Chambre Triple',
+            'suite' => 'Suite',
+        ] as $type => $name) {
+            $response = $this->get('/chambres/' . $type);
+            $response
                 ->assertOk()
                 ->assertSee($name);
+            $this->assertStringNotContainsString('m²', $response->getContent());
         }
     }
 
