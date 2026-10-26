@@ -61,14 +61,12 @@
                         </div>
                         <div>
                             <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-[#a67b3f]">{{ __('site.common.bed_type') }}</dt>
-                            <dd class="mt-2 text-[#3b4b45]">🛏 {{ __('site.rooms.' . $room['slug'] . '.bed') }}</dd>
+                            <dd class="mt-2 text-[#3b4b45]">🛏 {{ __('site.rooms.' . $room['slug'] . '.detail_bed') }}</dd>
                         </div>
-                        @if ($room['surface'])
-                            <div>
-                                <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-[#a67b3f]">{{ __('site.common.surface') }}</dt>
-                                <dd class="mt-2 text-[#3b4b45]">{{ $room['surface'] }}</dd>
-                            </div>
-                        @endif
+                        <div>
+                            <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-[#a67b3f]">{{ __('site.common.air_conditioning') }}</dt>
+                            <dd class="mt-2 text-[#3b4b45]">{{ __('site.common.available') }}</dd>
+                        </div>
                     </dl>
 
                     <div class="mt-10">
