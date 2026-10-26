@@ -20,8 +20,8 @@
 
         <div class="flex items-center gap-3">
             @auth
-                <a href="{{ route('payments.index') }}" class="text-xs font-semibold text-white/90 transition hover:text-[#ebd3a4]">
-                    {{ __('site.payment.account_title') }}
+                <a href="{{ auth()->user()->isOwner() ? route('owner.dashboard') : route('payments.index') }}" class="text-xs font-semibold text-white/90 transition hover:text-[#ebd3a4]">
+                    {{ auth()->user()->isOwner() ? __('site.owner.dashboard_title') : __('site.payment.account_title') }}
                 </a>
                 <form action="{{ route('logout') }}" method="POST" class="hidden sm:block">
                     @csrf

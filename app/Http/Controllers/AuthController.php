@@ -38,6 +38,10 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->user()->isOwner()) {
+            return redirect()->intended(route('owner.dashboard'));
+        }
+
         return redirect()->intended(route('payments.index'));
     }
 

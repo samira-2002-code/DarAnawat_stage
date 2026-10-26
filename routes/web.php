@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Http\Request;
@@ -59,6 +60,11 @@ Route::middleware('auth')->prefix('account')->name('payments.')->group(function 
         ->name('report');
     Route::get('/payment-receipts/{receipt}', [PaymentController::class, 'downloadReceipt'])
         ->name('receipts.download');
+});
+
+Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(function () {
+    Route::get('/', [OwnerDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/receipts/{receipt}', [OwnerDashboardController::class, 'downloadReceipt'])->name('receipts.download');
 });
 
 Route::get('/chambres/{type}', function (string $type) {
