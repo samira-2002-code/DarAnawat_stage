@@ -52,7 +52,7 @@ class NavbarLocalizationTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('<html lang="fr" dir="ltr">', false)
-            ->assertSee('VOTRE ÉVASION MAROCAINE');
+            ->assertSee('L’héritage marocain rencontre l’élégance moderne.');
     }
 
     public function test_arabic_pages_use_rtl_and_translated_content(): void
@@ -68,10 +68,10 @@ class NavbarLocalizationTest extends TestCase
     public function test_home_rooms_and_details_are_translated_in_each_locale(): void
     {
         $localizedContent = [
-            'fr' => ['VOTRE ÉVASION MAROCAINE', 'Nos Chambres', 'Chambre Single'],
-            'en' => ['YOUR MOROCCAN ESCAPE', 'Our Rooms', 'Single Room'],
-            'es' => ['SU ESCAPADA MARROQUÍ', 'Nuestras habitaciones', 'Habitación individual'],
-            'ar' => ['رحلتكم المغربية', 'غرفنا', 'غرفة فردية'],
+            'fr' => ['L’héritage marocain rencontre l’élégance moderne.', 'Nos chambres', 'Chambre Single'],
+            'en' => ['Where Moroccan heritage meets modern elegance.', 'Our Rooms', 'Single Room'],
+            'es' => ['Donde el legado marroquí encuentra la elegancia moderna.', 'Nuestras habitaciones', 'Habitación individual'],
+            'ar' => ['حيث يلتقي التراث المغربي بالأناقة العصرية.', 'غرفنا', 'غرفة فردية'],
         ];
 
         foreach ($localizedContent as $locale => [$homeText, $roomsText, $detailsText]) {
@@ -90,6 +90,25 @@ class NavbarLocalizationTest extends TestCase
                 ->get('/chambres/single')
                 ->assertOk()
                 ->assertSee($detailsText);
+        }
+    }
+
+    public function test_home_experience_sections_are_translated_in_each_locale(): void
+    {
+        $localizedSections = [
+            'fr' => ['Un petit-déjeuner marocain inclus dans votre séjour', 'Jemaa el-Fna', 'Un peu de calme après la ville.'],
+            'en' => ['A Moroccan Breakfast, Included With Your Stay', 'Jemaa el-Fna', 'A little calm, after the city.'],
+            'es' => ['Desayuno marroquí incluido en su estancia', 'Jemaa el-Fna', 'Un poco de calma después de la ciudad.'],
+            'ar' => ['فطور مغربي مشمول في الإقامة', 'ساحة جامع الفنا', 'سكينة تستقبلكم بعد المدينة.'],
+        ];
+
+        foreach ($localizedSections as $locale => [$breakfast, $city, $atmosphere]) {
+            $this->withSession(['locale' => $locale])
+                ->get('/')
+                ->assertOk()
+                ->assertSee($breakfast)
+                ->assertSee($city)
+                ->assertSee($atmosphere);
         }
     }
 

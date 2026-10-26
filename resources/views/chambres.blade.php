@@ -29,6 +29,7 @@
                 <div class="mx-auto max-w-3xl text-center">
                     <p class="section-kicker">{{ __('site.chambres.section_kicker') }}</p>
                     <h2 class="section-title px-3 text-4xl leading-tight md:text-6xl">{{ __('site.chambres.section_title') }}</h2>
+                    <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#4d5b56]">{{ __('site.chambres.section_description') }}</p>
                 </div>
 
                 <div class="mt-12 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4 xl:gap-8">

@@ -11,7 +11,7 @@ class ChambresTest extends TestCase
         $response = $this->get('/chambres');
 
         $response->assertOk()
-            ->assertSee('Nos Chambres')
+            ->assertSee('Nos chambres')
             ->assertSee('Chambre Single')
             ->assertSee('Chambre Double')
             ->assertSee('Chambre Triple')
@@ -21,7 +21,7 @@ class ChambresTest extends TestCase
             ->assertSee('1 500 DH')
             ->assertSee('Voir les détails')
             ->assertSee('Réserver')
-            ->assertSee('Chambres');
+            ->assertSee('CHAMBRES');
     }
 
     public function test_room_cards_link_to_their_detail_pages(): void
