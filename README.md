@@ -1,190 +1,294 @@
-# Dar Anawat – Site Web de Riad
+# Dar Anawat — Moroccan Guesthouse Website
 
-## 1. Présentation du projet
+## 1. Project Overview
 
-Dar Anawat est un site web destiné à présenter un riad et ses chambres aux visiteurs. L’objectif est de proposer une interface simple, élégante et facile à utiliser, permettant aux utilisateurs de découvrir le riad, consulter les chambres disponibles et accéder aux détails de chaque chambre.
+**Dar Anawat** is a Laravel web application for a Moroccan guesthouse. The project aims to provide visitors with an elegant and user-friendly experience to discover the guesthouse, explore available rooms, view room details, and access the reservation process.
 
-Ce projet est développé avec Laravel et Blade, en utilisant HTML, CSS et JavaScript pour la structure et la présentation des pages.
+The website combines a modern luxury design with Moroccan-inspired elements, using an ivory and cream background, deep green accents, and gold details.
 
-## 2. Technologies utilisées
+## 2. Technologies Used
 
-- **Laravel :** framework PHP utilisé pour organiser le projet et gérer les routes.
-- **PHP :** langage utilisé pour la partie serveur.
-- **Blade :** moteur de templates Laravel pour créer les pages dynamiques.
-- **HTML5 :** structure des pages web.
-- **CSS3 :** mise en forme et design de l’interface.
-- **JavaScript :** ajout éventuel d’interactions côté client.
-- **Git et GitHub :** gestion des versions et partage du code source.
+- **Backend:** PHP, Laravel 12
+- **Frontend:** HTML5, CSS3, JavaScript, Laravel Blade
+- **Database:** MySQL
+- **Development environment:** XAMPP, Visual Studio Code
+- **Dependency management:** Composer, npm
+- **Version control:** Git and GitHub
 
-## 3. Page d’accueil (Home Page)
+## 3. Implemented Pages and Features
 
-### Objectif
-La page d’accueil est la première page visible par les visiteurs. Elle permet de présenter le riad et de donner une première impression de son identité et de son ambiance.
+### 3.1 Home Page
 
-### Travail réalisé
-- Création de la structure générale de la page d’accueil.
-- Organisation des différentes sections pour faciliter la navigation.
-- Mise en place d’une interface visuelle adaptée à un site de riad.
-- Intégration de la barre de navigation (Navbar).
-- Intégration du pied de page (Footer).
-- Préparation de la navigation vers les autres pages du site.
-- Utilisation de données fictives lorsque cela est nécessaire pour la présentation.
+The home page introduces Dar Anawat and highlights its main services and experiences.
 
-### Résultat attendu
-Une page d’accueil claire et accueillante qui permet aux visiteurs de découvrir le riad et d’accéder facilement à la page des chambres.
+Implemented sections include:
 
-## 4. Page Chambres
+- Hero section with a main call to action.
+- About section presenting the guesthouse.
+- Room discovery section.
+- Experiences and services.
+- Discover Morocco section.
+- Call-to-action section encouraging visitors to explore or plan their stay.
+- Navigation links to the rooms page and other website sections.
 
-### Objectif
-La page Chambres permet aux visiteurs de consulter les différentes chambres proposées par le riad.
+### 3.2 Rooms Page
 
-### Travail réalisé
-- Création de la vue `chambres.blade.php`.
-- Organisation des chambres sous forme de cartes.
-- Réutilisation du composant Blade `components/room-card.blade.php` pour afficher les cartes de chambres.
-- Présentation des informations principales de chaque chambre selon les données disponibles.
-- Mise en place d’un accès à la page de détail depuis chaque carte.
-- Utilisation de données fictives pour faciliter le développement et la présentation de l’interface.
-- Intégration de la navigation commune avec la Navbar et le Footer.
+The rooms page presents the available room categories in a structured layout.
 
-### Résultat attendu
-Une page qui permet aux visiteurs de parcourir les chambres et de sélectionner celle qu’ils souhaitent découvrir plus en détail.
+Features include:
 
-## 5. Page Détail d’une chambre
+- Room cards with photos.
+- Room names and prices.
+- Short room descriptions.
+- Links to the corresponding room details.
+- Navigation between the home page, rooms page, and details pages.
 
-### Objectif
-La page Détail permet de consulter les informations relatives à une chambre sélectionnée depuis la page Chambres.
+**Recent update:** The Size information has been requested to be removed from both the rooms listing page and the room details page.
 
-### Travail réalisé
-- Création de la vue `chambre-details.blade.php`.
-- Préparation d’une page dédiée à la présentation détaillée d’une chambre.
-- Organisation des informations pour faciliter la lecture.
-- Préparation de la navigation entre la liste des chambres et leurs pages de détail.
-- Mise en place de la route permettant d’accéder au détail d’une chambre, selon son type.
-- Réutilisation des éléments communs du site pour conserver une présentation cohérente.
+### 3.3 Room Details Page
 
-### Résultat attendu
-Une page permettant au visiteur d’obtenir davantage d’informations sur une chambre avant de poursuivre éventuellement vers une réservation.
+The details page provides more information about a selected room.
 
-## 6. Organisation des fichiers
+Features include:
 
-Les principaux fichiers concernés par le développement sont :
+- Room name and description.
+- Price per night.
+- Guest capacity.
+- Bed information.
+- Room photos and gallery.
+- Available amenities and equipment.
+- Access to the reservation process.
 
-```text
-app/
-└── Http/
-    └── Controllers/
-        └── Controller.php
+The room details are displayed according to the selected room type.
 
-resources/
-└── views/
-    ├── components/
-    │   ├── navbar.blade.php
-    │   ├── footer.blade.php
-    │   └── room-card.blade.php
-    ├── layouts/
-    │   └── app.blade.php
-    ├── chambres.blade.php
-    └── chambre-details.blade.php
+### 3.4 Room Categories
 
-routes/
-└── web.php
+The website includes three room categories:
 
-tests/
-└── Feature/
-    └── ChambresTest.php
+| Room | Price per night |
+|---|---:|
+Triple Room: 3 separate beds
+
+Twin Room: 2 separate beds
+
+Suite: 1 large bed + private terrace
+
+Double Room: 1 large bed
+These are the room prices previously configured in the project and may be updated as needed.
+
+### 3.5 Multilingual Support
+
+The website is designed to support four languages:
+
+- French (`fr`)
+- English (`en`)
+- Spanish (`es`)
+- Arabic (`ar`)
+
+The project includes language-switching functionality and translation support. The interface is intended to adapt to the selected language, including right-to-left presentation for Arabic where configured.
+
+### 3.6 Reservation Features
+
+The project includes reservation-related functionality and routes for creating and storing reservations.
+
+The intended visitor journey is:
+
+1. Visit the home page.
+2. Browse the available rooms.
+3. Open a room details page.
+4. Access the reservation process.
+5. Continue through the reservation and payment flow where implemented.
+
+The final status of payment processing and reservation confirmation should be verified against the current code before considering the complete booking workflow finished.
+
+## 4. Application Routes
+
+The main routes include:
+
+| Route | Purpose |
+|---|---|
+| `/` | Home page |
+| `/chambres` | Rooms listing |
+| `/chambres/{type}` | Details of a selected room |
+| Language-switching route | Change the website language |
+| Reservation creation route | Display or access the reservation process |
+| Reservation storage route | Submit a reservation |
+
+The room details route uses the selected room type to display the corresponding information.
+
+Invalid room types and unsupported locales are expected to return a 404 response. Reservation submission is configured to be rate-limited to help prevent excessive requests.
+
+Exact route names and HTTP methods should be checked in `routes/web.php`.
+
+## 5. User Interface and Design
+
+The design follows a Moroccan luxury hospitality aesthetic.
+
+Main design principles:
+
+- Elegant and minimalist presentation.
+- Ivory and cream backgrounds.
+- Deep green and gold accents.
+- High-quality room photography.
+- Consistent navigation and footer components.
+- Reusable room cards.
+- Clear calls to action.
+- Responsive layouts for different screen sizes.
+
+## 6. Reusable Components
+
+The project uses reusable Blade components and layouts to maintain consistency and reduce duplicated code.
+
+These include:
+
+- Navigation bar.
+- Footer.
+- Room cards.
+- Shared page layout and common interface sections.
+
+Blade templates use Laravel's template inheritance and component mechanisms where appropriate.
+
+## 7. Version Control and Collaboration
+
+Git and GitHub are used to manage source code and collaborate on the project.
+
+Main activities include:
+
+- Creating and working on branches.
+- Staging and committing changes.
+- Pulling updates from remote branches.
+- Merging collaborators' work.
+- Pushing changes to GitHub.
+- Resolving merge conflicts when necessary.
+
+The project has involved separate frontend and reservation-related work. Before merging or pushing, the current branch and working-tree status should be checked to avoid overwriting another contributor's changes.
+
+## 8. Installation and Setup
+
+### Prerequisites
+
+Install the following tools:
+
+- PHP compatible with Laravel 12.
+- Composer.
+- Node.js and npm.
+- MySQL.
+- XAMPP or another compatible local development environment.
+
+### Installation Steps
+
+Clone the repository:
+
+```bash
+git clone https://github.com/samira-2002-code/DarAnawat_stage.git
 ```
 
-## 7. Gestion des routes
+Open the project directory:
 
-Le fichier `routes/web.php` est utilisé pour définir les routes permettant d’accéder aux différentes pages du site.
+```bash
+cd DarAnawat_stage
+```
 
-Les routes concernées comprennent notamment :
-- La page d’accueil.
-- La page listant les chambres.
-- La page affichant les détails d’une chambre à partir de son type.
+Install PHP dependencies:
 
-Les URL exactes et les noms des routes dépendent de leur définition dans le fichier `web.php`.
+```bash
+composer install
+```
 
-## 8. Composants et layout communs
+Install frontend dependencies:
 
-### Navbar
-Le composant `navbar.blade.php` contient la barre de navigation commune, qui facilite l’accès aux différentes sections du site.
+```bash
+npm install
+```
 
-### Footer
-Le composant `footer.blade.php` contient le pied de page et les informations communes affichées en bas des pages.
+Create the environment file:
 
-### Layout principal
-Le fichier `layouts/app.blade.php` permet de définir une structure commune aux pages qui l’utilisent, afin de conserver une présentation homogène et de limiter la répétition du code.
+```bash
+cp .env.example .env
+```
 
-### Carte de chambre
-Le composant `room-card.blade.php` permet de réutiliser la même structure visuelle pour présenter les différentes chambres sur les pages du site.
+On Windows, you can also copy `.env.example` manually and rename the copy to `.env`.
 
-## 9. Tests
+Generate the application key:
 
-Les tests fonctionnels couvrent les pages de chambres et les demandes de réservation. Ils vérifient les champs, les dates, la capacité et l’enregistrement des demandes en attente.
+```bash
+php artisan key:generate
+```
 
-Pour exécuter tous les tests :
+Configure the database credentials in `.env` and create the corresponding MySQL database.
+
+Run database migrations if the project's migrations are ready:
+
+```bash
+php artisan migrate
+```
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+If the project uses Vite for frontend assets, run this command in a second terminal:
+
+```bash
+npm run dev
+```
+
+Open the local URL displayed by Laravel in your browser.
+
+## 9. Testing and Verification
+
+Before submitting changes, verify the following:
+
+- The home page loads correctly.
+- The rooms page displays the room cards.
+- Each room links to the correct details page.
+- Room names, prices, photos, and capacity are displayed correctly.
+- The Size label and value no longer appear on the rooms and details pages.
+- Language switching works for supported locales.
+- Reservation routes behave as expected.
+- No existing functionality has been broken by recent changes.
+
+Run the automated test suite with:
 
 ```bash
 php artisan test
 ```
 
-## 10. État d’avancement
+The test results must be checked after execution; this README does not claim that the latest changes have already passed all tests.
 
-Le projet comprend maintenant :
+## 10. Recent Changes
 
-- Page d’accueil.
-- Page Chambres.
-- Page Détail d’une chambre.
-- Formulaire de demande de réservation relié à Laravel.
-- Enregistrement en base des demandes en attente de vérification.
-- Validation serveur des coordonnées, des dates et de la capacité des chambres.
-- Interface de réservation traduite en français, anglais, espagnol et arabe.
-- Composants Navbar, Footer et carte de chambre.
-- Création de compte et connexion pour consulter ses propres réservations et paiements.
-- Paiement exclusivement par virement bancaire classique : le client effectue lui-même le virement depuis son application bancaire.
-- Instructions bancaires centralisées dans `config/payment.php`. Aucun paiement n’est traité par carte ou par une passerelle externe.
-- Signalement du virement et dépôt facultatif d’un justificatif PDF/JPG/PNG (5 Mo maximum), stocké sur le disque privé `payment_receipts`.
-- Espace propriétaire protégé par authentification et rôle. Le propriétaire est créé explicitement avec la commande interactive indiquée ci-dessous ; aucun compte ou mot de passe administrateur n’est codé en dur.
-- Vérification des fonds et confirmation de la réservation comme deux décisions distinctes, avec historique des décisions.
+The latest requested frontend modification is to remove the **Size** information from:
 
-Une réservation reste en attente tant que le propriétaire n’a pas vérifié la réception réelle du virement et contrôlé la disponibilité. Le signalement du client et une capture d’écran ne confirment jamais le paiement automatiquement.
+- The rooms listing page.
+- The room details page.
 
-## 11. Base de données locale
+All other room information and reservation functionality should remain unchanged.
 
-SQLite est configuré par défaut dans `.env.example`, donc XAMPP/MySQL n’est pas obligatoire. Sous PowerShell, après l’installation des dépendances, préparez votre environnement et appliquez les migrations :
+The removal concerns the user interface only. Room size data should not be deleted from the database or other parts of the application unless separately required.
 
-```powershell
-composer install
-npm ci
-npm run build
-Copy-Item .env.example .env
-php artisan key:generate
-if (-not (Test-Path database\database.sqlite)) { New-Item database\database.sqlite -ItemType File }
-php artisan migrate
-```
+## 11. Future Improvements
 
-Les tests utilisent SQLite en mémoire et ne modifient pas votre base locale.
+Potential improvements for future development include:
 
-## 12. Compte propriétaire et justificatifs
+- Completing and validating the full reservation workflow.
+- Integrating a payment solution or a clearly defined payment simulation.
+- Adding reservation confirmation.
+- Developing an administration interface for managing rooms and reservations.
+- Improving responsive design and accessibility.
+- Expanding automated tests.
+- Completing translations across all pages.
+- Preparing production deployment.
 
-Après avoir appliqué les migrations, créez le compte propriétaire depuis un terminal :
+## 12. Project Objective
 
-```powershell
-php artisan dar-anawat:make-owner
-```
+The objective of Dar Anawat is to provide a professional digital presence for a Moroccan guesthouse, allowing visitors to discover the property, explore room options, view detailed information, and access a convenient reservation experience.
 
-La commande demande l’adresse e-mail, le nom et le mot de passe de manière interactive. Elle ne définit pas de compte par défaut. L’accès au tableau de bord et aux justificatifs est contrôlé côté serveur ; les fichiers ne sont pas servis depuis le dossier public.
+---
 
-Les réservations créées sans connexion restent possibles. Un client connecté peut suivre ses propres réservations, signaler un virement et transmettre un justificatif. Seul le propriétaire peut examiner les paiements. Il doit confirmer la réception effective des fonds avant de marquer un paiement comme vérifié, puis confirmer séparément la réservation après contrôle de la disponibilité.
-
-Pour lancer les tests :
-
-```powershell
-php artisan test
-```
-
-## Conclusion
-
-Le site permet d’envoyer et de suivre les demandes de séjour et leur règlement par virement bancaire. Aucune transaction n’est simulée ou confirmée automatiquement ; la vérification manuelle par le propriétaire est obligatoire.
+**Project:** Dar Anawat  
+**Framework:** Laravel 12  
+**Repository:** https://github.com/samira-2002-code/DarAnawat_stage.git  
+**Status:** Under development
