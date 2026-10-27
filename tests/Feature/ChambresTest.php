@@ -51,7 +51,7 @@ class ChambresTest extends TestCase
             ->assertSee('Le plaisir de retrouver le calme après la ville.')
             ->assertSee('Équipements')
             ->assertSee('Wi-Fi gratuit')
-            ->assertSee('Télévision')
+            ->assertDontSee('Télévision')
             ->assertSee('Réserver')
             ->assertSee('Chambre Double')
             ->assertDontSee('18 m²')
@@ -173,6 +173,36 @@ class ChambresTest extends TestCase
                 $this->assertStringContainsString($available, $information);
                 $this->assertStringNotContainsString($size, $information);
                 $this->assertStringNotContainsString('m²', $information);
+            }
+        }
+    }
+
+    public function test_television_is_not_displayed_on_room_pages_in_any_locale(): void
+    {
+        $televisionLabels = [
+            'en' => ['Television', 'TV'],
+            'fr' => ['Télévision', 'Téléviseur', 'TV'],
+            'es' => ['Televisión', 'Televisor', 'TV'],
+            'ar' => ['تلفاز', 'التلفزيون', 'TV'],
+        ];
+
+        foreach ($televisionLabels as $locale => $labels) {
+            $listing = $this->withSession(['locale' => $locale])
+                ->get('/chambres')
+                ->assertOk();
+
+            foreach ($labels as $label) {
+                $listing->assertDontSee($label);
+            }
+
+            foreach (['single', 'double', 'triple', 'suite'] as $type) {
+                $detail = $this->withSession(['locale' => $locale])
+                    ->get('/chambres/' . $type)
+                    ->assertOk();
+
+                foreach ($labels as $label) {
+                    $detail->assertDontSee($label);
+                }
             }
         }
     }

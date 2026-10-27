@@ -156,7 +156,7 @@ return [
         'amenities_title' => 'Servicios',
         'amenities' => [
             'Wi-Fi gratuito', 'Aire acondicionado', 'Baño privado', 'Toallas',
-            'Artículos de aseo', 'Televisión', 'Pequeño espacio de almacenamiento',
+            'Artículos de aseo', 'Pequeño espacio de almacenamiento',
         ],
         'breakfast' => [
             'kicker' => 'Un despertar con sabor local',
