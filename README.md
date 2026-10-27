@@ -132,7 +132,7 @@ php artisan test
 
 ## 10. État d’avancement
 
-Le projet comprend désormais :
+Le projet comprend maintenant :
 
 - Page d’accueil.
 - Page Chambres.
@@ -142,8 +142,14 @@ Le projet comprend désormais :
 - Validation serveur des coordonnées, des dates et de la capacité des chambres.
 - Interface de réservation traduite en français, anglais, espagnol et arabe.
 - Composants Navbar, Footer et carte de chambre.
+- Création de compte et connexion pour consulter ses propres réservations et paiements.
+- Paiement exclusivement par virement bancaire classique : le client effectue lui-même le virement depuis son application bancaire.
+- Instructions bancaires centralisées dans `config/payment.php`. Aucun paiement n’est traité par carte ou par une passerelle externe.
+- Signalement du virement et dépôt facultatif d’un justificatif PDF/JPG/PNG (5 Mo maximum), stocké sur le disque privé `payment_receipts`.
+- Espace propriétaire protégé par authentification et rôle. Le propriétaire est créé explicitement avec la commande interactive indiquée ci-dessous ; aucun compte ou mot de passe administrateur n’est codé en dur.
+- Vérification des fonds et confirmation de la réservation comme deux décisions distinctes, avec historique des décisions.
 
-Les demandes ne confirment pas la disponibilité : le projet ne contient pas encore d’inventaire des chambres ni d’interface d’administration pour confirmer ou refuser une demande.
+Une réservation reste en attente tant que le propriétaire n’a pas vérifié la réception réelle du virement et contrôlé la disponibilité. Le signalement du client et une capture d’écran ne confirment jamais le paiement automatiquement.
 
 ## 11. Base de données locale
 
@@ -161,6 +167,24 @@ php artisan migrate
 
 Les tests utilisent SQLite en mémoire et ne modifient pas votre base locale.
 
+## 12. Compte propriétaire et justificatifs
+
+Après avoir appliqué les migrations, créez le compte propriétaire depuis un terminal :
+
+```powershell
+php artisan dar-anawat:make-owner
+```
+
+La commande demande l’adresse e-mail, le nom et le mot de passe de manière interactive. Elle ne définit pas de compte par défaut. L’accès au tableau de bord et aux justificatifs est contrôlé côté serveur ; les fichiers ne sont pas servis depuis le dossier public.
+
+Les réservations créées sans connexion restent possibles. Un client connecté peut suivre ses propres réservations, signaler un virement et transmettre un justificatif. Seul le propriétaire peut examiner les paiements. Il doit confirmer la réception effective des fonds avant de marquer un paiement comme vérifié, puis confirmer séparément la réservation après contrôle de la disponibilité.
+
+Pour lancer les tests :
+
+```powershell
+php artisan test
+```
+
 ## Conclusion
 
-Le site permet aux visiteurs d’envoyer une demande de séjour enregistrée en base. L’équipe doit vérifier la disponibilité avant toute confirmation ; aucun paiement en ligne n’est proposé.
+Le site permet d’envoyer et de suivre les demandes de séjour et leur règlement par virement bancaire. Aucune transaction n’est simulée ou confirmée automatiquement ; la vérification manuelle par le propriétaire est obligatoire.

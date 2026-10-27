@@ -19,6 +19,17 @@
         </div>
 
         <div class="flex items-center gap-3">
+            @auth
+                <a href="{{ auth()->user()->isOwner() ? route('owner.dashboard') : route('payments.index') }}" class="text-xs font-semibold text-white/90 transition hover:text-[#ebd3a4]">
+                    {{ auth()->user()->isOwner() ? __('site.owner.dashboard_title') : __('site.payment.account_title') }}
+                </a>
+                <form action="{{ route('logout') }}" method="POST" class="hidden sm:block">
+                    @csrf
+                    <button type="submit" class="text-xs font-semibold text-white/90 transition hover:text-[#ebd3a4]">{{ __('site.auth.logout') }}</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="text-xs font-semibold text-white/90 transition hover:text-[#ebd3a4]">{{ __('site.auth.login_link') }}</a>
+            @endauth
             <div class="flex items-center gap-1.5 text-xs font-medium tracking-[0.12em] text-white/80 sm:gap-2" role="group" aria-label="{{ __('navigation.language_selector') }}">
                 @foreach (['fr' => 'FR', 'en' => 'EN', 'es' => 'ES', 'ar' => 'AR'] as $locale => $label)
                     <a href="{{ route('language.switch', ['locale' => $locale]) }}" lang="{{ $locale }}" hreflang="{{ $locale }}" @if (app()->isLocale($locale)) aria-current="page" @endif class="transition hover:text-[#ebd3a4] {{ app()->isLocale($locale) ? 'text-[#ebd3a4]' : '' }}">{{ $label }}</a>

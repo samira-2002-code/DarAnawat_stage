@@ -1,3 +1,38 @@
+@php
+    $rooms = [
+        [
+            'slug' => 'single',
+            'name' => 'Chambre Single',
+            'price' => config('rooms.rates_mad.single'),
+            'description' => 'Un cocon chaleureux et paisible, idéal pour un séjour en toute simplicité.',
+            'capacity' => '1 personne',
+            'bed' => 'Lit simple',
+            'surface' => '18 m²',
+            'image' => asset('images/rooms/atlas.jpg'),
+        ],
+        [
+            'slug' => 'double',
+            'name' => 'Chambre Double',
+            'price' => config('rooms.rates_mad.double'),
+            'description' => 'Une chambre lumineuse et confortable, parfaite pour un séjour à deux.',
+            'capacity' => '2 personnes',
+            'bed' => 'Lit queen size',
+            'surface' => '24 m²',
+            'image' => asset('images/rooms/palm.jpg'),
+        ],
+        [
+            'slug' => 'suite',
+            'name' => 'Suite Dar Anawat',
+            'price' => config('rooms.rates_mad.suite'),
+            'description' => 'Un espace raffiné et spacieux, pensé pour une expérience unique à Dar Anawat.',
+            'capacity' => 'Jusqu’à 4 personnes',
+            'bed' => 'Lit king size et canapé-lit',
+            'surface' => '38 m²',
+            'image' => asset('images/rooms/suite.jpg'),
+        ],
+    ];
+@endphp
+
 @extends('layouts.app')
 
 @section('title', __('site.meta.rooms_title'))

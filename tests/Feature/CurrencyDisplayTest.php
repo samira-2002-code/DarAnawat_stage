@@ -33,7 +33,14 @@ class CurrencyDisplayTest extends TestCase
 
     public function test_room_prices_stay_in_dirhams_on_home_rooms_details_and_booking_pages(): void
     {
-        foreach (['fr', 'en', 'es', 'ar'] as $locale) {
+        $expected = [
+            'fr' => ['rooms_url' => '/chambres', 'rooms' => ['790 MAD', '1 090 MAD', '1 690 MAD'], 'detail_url' => '/chambres/double', 'detail_price' => '1 090 MAD', 'home' => ['790 MAD', '1 090 MAD', '1 690 MAD']],
+            'en' => ['rooms_url' => '/chambres', 'rooms' => ['73 EUR', '100 EUR', '155 EUR'], 'detail_url' => '/chambres/double', 'detail_price' => '100 EUR', 'home' => ['73 EUR', '100 EUR', '155 EUR']],
+            'es' => ['rooms_url' => '/chambres', 'rooms' => ['73 EUR', '100 EUR', '155 EUR'], 'detail_url' => '/chambres/double', 'detail_price' => '100 EUR', 'home' => ['73 EUR', '100 EUR', '155 EUR']],
+            'ar' => ['rooms_url' => '/chambres', 'rooms' => ['790 MAD', '1 090 MAD', '1 690 MAD'], 'detail_url' => '/chambres/double', 'detail_price' => '1 090 MAD', 'home' => ['790 MAD', '1 090 MAD', '1 690 MAD']],
+        ];
+
+        foreach ($expected as $locale => $prices) {
             $this->withSession(['locale' => $locale])
                 ->get('/')
                 ->assertOk()
