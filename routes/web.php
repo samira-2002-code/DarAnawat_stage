@@ -5,6 +5,7 @@ use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\OwnerPaymentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationController;
+use App\Support\RoomCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +33,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/chambres', function () {
-    return view('chambres');
+    return view('chambres', ['rooms' => RoomCatalog::all()]);
 })->name('chambres');
 
 Route::middleware('guest')->group(function () {

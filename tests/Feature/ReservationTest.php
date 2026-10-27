@@ -25,7 +25,7 @@ class ReservationTest extends TestCase
         $this->get(route('chambre.details', ['type' => 'double']))
             ->assertOk()
             ->assertSee(route('reservations.create', ['room' => 'double']))
-            ->assertDontSee('mailto:');
+            ->assertSee('mailto:www.dar.ennawat@gmail.com');
     }
 
     public function test_guest_can_submit_a_reservation_request_that_is_saved_as_pending(): void
@@ -79,6 +79,19 @@ class ReservationTest extends TestCase
             'amount_mad' => 3270,
             'status' => 'awaiting_transfer',
         ]);
+    }
+
+    public function test_triple_room_reservation_accepts_three_guests(): void
+    {
+        $this->post(route('reservations.store'), [
+            'guest_name' => 'Samira Guest',
+            'guest_email' => 'samira@example.com',
+            'room_type' => 'triple',
+            'check_in' => now()->addDays(10)->toDateString(),
+            'check_out' => now()->addDays(12)->toDateString(),
+            'guests' => 3,
+        ])->assertRedirect(route('reservations.create'))
+            ->assertSessionHas('reservation_success');
     }
 
     public function test_authenticated_user_is_linked_to_their_reservation_request(): void

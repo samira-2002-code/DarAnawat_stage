@@ -25,7 +25,7 @@ class ReservationController extends Controller
         );
 
         return view('reservations.create', [
-            'rooms' => array_keys(Reservation::ROOM_CAPACITIES),
+            'rooms' => RoomCatalog::all(),
             'selectedRoom' => $selectedRoom,
         ]);
     }

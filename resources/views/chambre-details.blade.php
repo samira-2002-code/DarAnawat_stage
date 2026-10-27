@@ -63,10 +63,12 @@
                             <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-[#a67b3f]">{{ __('site.common.bed_type') }}</dt>
                             <dd class="mt-2 text-[#3b4b45]">🛏 {{ __('site.rooms.' . $room['slug'] . '.bed') }}</dd>
                         </div>
-                        <div>
-                            <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-[#a67b3f]">{{ __('site.common.surface') }}</dt>
-                            <dd class="mt-2 text-[#3b4b45]">{{ $room['surface'] }}</dd>
-                        </div>
+                        @if ($room['surface'])
+                            <div>
+                                <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-[#a67b3f]">{{ __('site.common.surface') }}</dt>
+                                <dd class="mt-2 text-[#3b4b45]">{{ $room['surface'] }}</dd>
+                            </div>
+                        @endif
                     </dl>
 
                     <div class="mt-10">
@@ -86,7 +88,7 @@
                 <aside class="h-fit rounded-[2rem] border border-[#e2d3a6] bg-[linear-gradient(135deg,#f7f0e2,#fffdf9)] p-7 shadow-[var(--shadow)] lg:sticky lg:top-8">
                     <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#a67b3f]">{{ __('site.details.stay_label') }}</p>
                     <p class="mt-5 font-display text-5xl font-semibold text-[#122b29]">
-                        <bdi dir="ltr">{{ \App\Support\Currency::formatMad($room['price']) }}</bdi>
+                        <bdi dir="ltr">{{ \App\Support\Currency::formatDh($room['price']) }}</bdi>
                     </p>
                     <p class="mt-1 text-sm text-[#6c756e]">{{ __('site.details.per_night') }}</p>
                     <div class="my-6 border-t border-[#e3d5b0]"></div>
@@ -101,6 +103,41 @@
             </div>
         </section>
 
+        <section class="section-shell pb-12 md:pb-16">
+            <div class="grid overflow-hidden rounded-[2rem] bg-[#122b29] text-white shadow-[var(--shadow)] md:grid-cols-[0.85fr_1.15fr]">
+                <div class="min-h-64 bg-cover bg-center" style="background-image: url('{{ asset('images/hero.jpg') }}');"></div>
+                <div class="p-7 md:p-12">
+                    <p class="section-kicker !text-[#e2c88c]">{{ __('site.details.marrakech.kicker') }}</p>
+                    <h2 class="font-display text-4xl leading-tight md:text-5xl">{{ __('site.details.marrakech.title') }}</h2>
+                    <p class="mt-5 text-base leading-8 text-white/80">{{ __('site.details.marrakech.description') }}</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-shell pb-20 md:pb-28">
+            <div class="overflow-hidden rounded-[2rem] border border-[#e2d3a6] bg-[linear-gradient(135deg,#f7f0e2,#fffdf9)] p-7 shadow-[var(--shadow)] md:p-12">
+                <div class="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+                    <div>
+                        <p class="section-kicker">{{ __('site.details.breakfast.kicker') }}</p>
+                        <h2 class="font-display text-4xl leading-tight text-[#122b29] md:text-5xl">{{ __('site.details.breakfast.title') }}</h2>
+                        <p class="mt-5 text-base leading-8 text-[#4d5b56]">{{ __('site.details.breakfast.description') }}</p>
+                        <p class="mt-6 inline-flex items-center gap-3 rounded-full bg-[#122b29] px-5 py-3 text-sm font-semibold text-white">
+                            <span aria-hidden="true" class="text-[#e2c88c]">✦</span>
+                            {{ __('site.details.breakfast.included') }}
+                        </p>
+                    </div>
+                    <ul class="grid gap-3 sm:grid-cols-2">
+                        @foreach (__('site.details.breakfast.items') as $item)
+                            <li class="flex items-center gap-3 rounded-2xl border border-[#e8dcc0] bg-white/70 px-4 py-3 text-sm text-[#3b4b45]">
+                                <span aria-hidden="true" class="text-[#a67b3f]">✧</span>
+                                {{ $item }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <section class="bg-[#f3ede0] py-20 md:py-24">
             <div class="section-shell">
                 <div class="mx-auto max-w-3xl text-center">
@@ -108,7 +145,7 @@
                     <h2 class="section-title px-3 text-4xl leading-tight md:text-6xl">{{ __('site.details.similar_title') }}</h2>
                 </div>
 
-                <div class="mt-12 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
+                <div class="mt-12 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4 xl:gap-8">
                     @foreach ($rooms as $similarRoom)
                         <x-room-card :room="$similarRoom" />
                     @endforeach

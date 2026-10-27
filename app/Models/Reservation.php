@@ -11,6 +11,7 @@ class Reservation extends Model
     public const ROOM_CAPACITIES = [
         'single' => 1,
         'double' => 2,
+        'triple' => 3,
         'suite' => 4,
     ];
 
