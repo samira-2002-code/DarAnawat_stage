@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OwnerDashboardController;
+use App\Http\Controllers\OwnerPaymentController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationController;
 use App\Support\RoomCatalog;
 use Illuminate\Http\Request;
@@ -32,13 +36,97 @@ Route::get('/chambres', function () {
     return view('chambres', ['rooms' => RoomCatalog::all()]);
 })->name('chambres');
 
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])
+        ->middleware('throttle:5,1')
+        ->name('login.store');
+    Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])
+        ->middleware('throttle:5,1')
+        ->name('register.store');
+});
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
 Route::get('/reservation', [ReservationController::class, 'create'])->name('reservations.create');
 Route::post('/reservation', [ReservationController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('reservations.store');
 
+Route::middleware('auth')->prefix('account')->name('payments.')->group(function () {
+    Route::get('/payments', [PaymentController::class, 'index'])->name('index');
+    Route::get('/reservations/{reservation}/payment', [PaymentController::class, 'show'])
+        ->name('show');
+    Route::post('/reservations/{reservation}/payment/report', [PaymentController::class, 'reportTransfer'])
+        ->middleware('throttle:5,1')
+        ->name('report');
+    Route::get('/payment-receipts/{receipt}', [PaymentController::class, 'downloadReceipt'])
+        ->name('receipts.download');
+});
+
+Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(function () {
+    Route::get('/', [OwnerDashboardController::class, 'index'])->name('dashboard');
+    Route::post('/payments/{payment}/verify', [OwnerPaymentController::class, 'verify'])->name('payments.verify');
+    Route::post('/receipts/{receipt}/reject', [OwnerPaymentController::class, 'rejectReceipt'])->name('receipts.reject');
+    Route::post('/payments/{payment}/not-received', [OwnerPaymentController::class, 'markNotReceived'])->name('payments.not-received');
+    Route::post('/reservations/{reservation}/confirm', [OwnerPaymentController::class, 'confirmReservation'])->name('reservations.confirm');
+    Route::get('/receipts/{receipt}', [OwnerDashboardController::class, 'downloadReceipt'])->name('receipts.download');
+});
+
 Route::get('/chambres/{type}', function (string $type) {
-    $rooms = RoomCatalog::all();
+    $rooms = [
+        'single' => [
+            'slug' => 'single',
+            'name' => 'Chambre Single',
+            'price' => config('rooms.rates_mad.single'),
+            'description' => 'Un cocon chaleureux et paisible pensé pour offrir un séjour confortable et authentique au cœur de Dar Anawat. Cette chambre associe matières naturelles, détails marocains et confort contemporain.',
+            'short_description' => 'Un cocon chaleureux et paisible, idéal pour un séjour en toute simplicité.',
+            'capacity' => '1 personne',
+            'bed' => 'Lit simple',
+            'surface' => '18 m²',
+            'image' => asset('images/rooms/atlas.jpg'),
+            'gallery' => [
+                asset('images/rooms/atlas.jpg'),
+                asset('images/rooms/palm.jpg'),
+                asset('images/rooms/suite.jpg'),
+                asset('images/hero.jpg'),
+            ],
+        ],
+        'double' => [
+            'slug' => 'double',
+            'name' => 'Chambre Double',
+            'price' => config('rooms.rates_mad.double'),
+            'description' => 'Une chambre lumineuse et confortable, idéale pour un séjour à deux. Les matières naturelles et les détails marocains s’accordent au confort contemporain de Dar Anawat.',
+            'short_description' => 'Une chambre lumineuse et confortable, parfaite pour un séjour à deux.',
+            'capacity' => '2 personnes',
+            'bed' => 'Lit queen size',
+            'surface' => '24 m²',
+            'image' => asset('images/rooms/palm.jpg'),
+            'gallery' => [
+                asset('images/rooms/palm.jpg'),
+                asset('images/rooms/atlas.jpg'),
+                asset('images/rooms/suite.jpg'),
+                asset('images/hero.jpg'),
+            ],
+        ],
+        'suite' => [
+            'slug' => 'suite',
+            'name' => 'Suite Dar Anawat',
+            'price' => config('rooms.rates_mad.suite'),
+            'description' => 'Un espace raffiné et spacieux, pensé pour une expérience unique à Dar Anawat. Profitez d’un cadre intime où l’artisanat marocain rencontre un confort généreux et contemporain.',
+            'short_description' => 'Un espace raffiné et spacieux, pensé pour une expérience unique à Dar Anawat.',
+            'capacity' => 'Jusqu’à 4 personnes',
+            'bed' => 'Lit king size et canapé-lit',
+            'surface' => '38 m²',
+            'image' => asset('images/rooms/suite.jpg'),
+            'gallery' => [
+                asset('images/rooms/suite.jpg'),
+                asset('images/rooms/palm.jpg'),
+                asset('images/rooms/atlas.jpg'),
+                asset('images/hero.jpg'),
+            ],
+        ],
+    ];
 
     abort_unless(isset($rooms[$type]), 404);
 

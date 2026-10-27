@@ -1,4 +1,33 @@
 @php
+    $rooms = [
+        [
+            'translation_key' => 'atlas',
+            'name' => 'Atlas Room',
+            'price' => config('rooms.rates_mad.single'),
+            'guests' => 2,
+            'bed' => 'King Bed',
+            'description' => 'Elegant room inspired by the colors and landscapes of Morocco.',
+            'image' => asset('images/rooms/atlas.jpg'),
+        ],
+        [
+            'translation_key' => 'palm',
+            'name' => 'Palm Room',
+            'price' => config('rooms.rates_mad.double'),
+            'guests' => 2,
+            'bed' => 'Queen Bed',
+            'description' => 'A warm and peaceful room combining Moroccan details with modern comfort.',
+            'image' => asset('images/rooms/palm.jpg'),
+        ],
+        [
+            'translation_key' => 'suite',
+            'name' => 'Anawat Suite',
+            'price' => config('rooms.rates_mad.suite'),
+            'guests' => 4,
+            'bed' => 'King Bed + Sofa Bed',
+            'description' => 'A spacious private suite designed for an unforgettable Moroccan escape.',
+            'image' => asset('images/rooms/suite.jpg'),
+        ],
+    ];
     $rooms = \App\Support\RoomCatalog::all();
 
     $experiences = [
