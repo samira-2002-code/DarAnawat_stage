@@ -86,7 +86,7 @@ class OwnerReservationCrudTest extends TestCase
             ->from(route('owner.reservations.create'))
             ->post(route('owner.reservations.store'), [
                 ...$this->validReservation(),
-                'room_type' => 'triple',
+                'room_type' => 'not-a-room',
                 'guests' => 3,
             ])
             ->assertSessionHasErrors('room_type');

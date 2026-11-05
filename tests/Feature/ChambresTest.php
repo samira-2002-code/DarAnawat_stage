@@ -16,9 +16,10 @@ class ChambresTest extends TestCase
             ->assertSee('Chambre Double')
             ->assertSee('Chambre Triple')
             ->assertSee('Suite')
-            ->assertSee('800 DH')
-            ->assertSee('1 200 DH')
+            ->assertSee('790 DH')
+            ->assertSee('1 090 DH')
             ->assertSee('1 500 DH')
+            ->assertSee('1 690 DH')
             ->assertSee('Voir les détails')
             ->assertSee('Réserver')
             ->assertSee('CHAMBRES');
@@ -39,7 +40,7 @@ class ChambresTest extends TestCase
         $this->get('/chambres/single')
             ->assertOk()
             ->assertSee('Chambre Single')
-            ->assertSee('800 DH')
+            ->assertSee('790 DH')
             ->assertSee('Une chambre sereine pour une personne, où les matières naturelles et les détails marocains s’accordent au confort contemporain.')
             ->assertSee('1 personne')
             ->assertSee('Lit simple')
@@ -56,7 +57,7 @@ class ChambresTest extends TestCase
     public function test_each_supported_room_type_has_a_detail_page(): void
     {
         foreach (['double' => 'Chambre Double', 'triple' => 'Chambre Triple', 'suite' => 'Suite'] as $type => $name) {
-            $this->get('/chambres/' . $type)
+            $this->get('/chambres/'.$type)
                 ->assertOk()
                 ->assertSee($name);
         }
@@ -66,10 +67,10 @@ class ChambresTest extends TestCase
     {
         $this->get(route('reservations.create'))
             ->assertOk()
-            ->assertSee('Chambre Single — 800 DH / nuit')
-            ->assertSee('Chambre Double — 1 200 DH / nuit')
+            ->assertSee('Chambre Single — 790 DH / nuit')
+            ->assertSee('Chambre Double — 1 090 DH / nuit')
             ->assertSee('Chambre Triple — 1 500 DH / nuit')
-            ->assertSee('Suite — 1 200 DH / nuit');
+            ->assertSee('Suite — 1 690 DH / nuit');
     }
 
     public function test_unknown_room_type_returns_not_found(): void

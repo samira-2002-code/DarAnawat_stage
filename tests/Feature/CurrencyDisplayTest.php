@@ -33,41 +33,38 @@ class CurrencyDisplayTest extends TestCase
 
     public function test_room_prices_stay_in_dirhams_on_home_rooms_details_and_booking_pages(): void
     {
-        $expected = [
-            'fr' => ['rooms_url' => '/chambres', 'rooms' => ['790 MAD', '1 090 MAD', '1 690 MAD'], 'detail_url' => '/chambres/double', 'detail_price' => '1 090 MAD', 'home' => ['790 MAD', '1 090 MAD', '1 690 MAD']],
-            'en' => ['rooms_url' => '/chambres', 'rooms' => ['73 EUR', '100 EUR', '155 EUR'], 'detail_url' => '/chambres/double', 'detail_price' => '100 EUR', 'home' => ['73 EUR', '100 EUR', '155 EUR']],
-            'es' => ['rooms_url' => '/chambres', 'rooms' => ['73 EUR', '100 EUR', '155 EUR'], 'detail_url' => '/chambres/double', 'detail_price' => '100 EUR', 'home' => ['73 EUR', '100 EUR', '155 EUR']],
-            'ar' => ['rooms_url' => '/chambres', 'rooms' => ['790 MAD', '1 090 MAD', '1 690 MAD'], 'detail_url' => '/chambres/double', 'detail_price' => '1 090 MAD', 'home' => ['790 MAD', '1 090 MAD', '1 690 MAD']],
+        $roomPrices = [
+            'single' => '790 DH',
+            'double' => '1 090 DH',
+            'triple' => '1 500 DH',
+            'suite' => '1 690 DH',
         ];
 
-        foreach ($expected as $locale => $prices) {
-            $this->withSession(['locale' => $locale])
-                ->get('/')
-                ->assertOk()
-                ->assertSee('<bdi dir="ltr">800 DH</bdi>', false)
-                ->assertSee('<bdi dir="ltr">1 200 DH</bdi>', false)
-                ->assertSee('<bdi dir="ltr">1 500 DH</bdi>', false);
+        foreach (['fr', 'en', 'es', 'ar'] as $locale) {
+            foreach (['/', '/chambres'] as $url) {
+                $response = $this->withSession(['locale' => $locale])
+                    ->get($url)
+                    ->assertOk();
 
-            $this->withSession(['locale' => $locale])
-                ->get('/chambres')
-                ->assertOk()
-                ->assertSee('<bdi dir="ltr">800 DH</bdi>', false)
-                ->assertSee('<bdi dir="ltr">1 200 DH</bdi>', false)
-                ->assertSee('<bdi dir="ltr">1 500 DH</bdi>', false);
+                foreach ($roomPrices as $price) {
+                    $response->assertSee('<bdi dir="ltr">'.$price.'</bdi>', false);
+                }
+            }
 
-            foreach (['single' => '800 DH', 'double' => '1 200 DH', 'triple' => '1 500 DH', 'suite' => '1 200 DH'] as $room => $price) {
+            foreach ($roomPrices as $room => $price) {
                 $this->withSession(['locale' => $locale])
                     ->get('/chambres/'.$room)
                     ->assertOk()
                     ->assertSee('<bdi dir="ltr">'.$price.'</bdi>', false);
             }
 
-            $this->withSession(['locale' => $locale])
+            $response = $this->withSession(['locale' => $locale])
                 ->get(route('reservations.create'))
-                ->assertOk()
-                ->assertSee('800 DH')
-                ->assertSee('1 200 DH')
-                ->assertSee('1 500 DH');
+                ->assertOk();
+
+            foreach ($roomPrices as $price) {
+                $response->assertSee($price);
+            }
         }
     }
 

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreReservationRequest;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Support\ReservationPricing;
+use App\Support\RoomCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

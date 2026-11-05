@@ -212,5 +212,5 @@ return [
             'reservation_not_deletable' => 'Cette réservation ne peut pas être supprimée après un signalement, un justificatif ou une décision de paiement.',
         ],
     ],
-    'footer' => ['title' => 'Un luxe paisible au cœur du Maroc.', 'description' => 'Un accueil attentionné, un cadre chaleureux et des instants inoubliables au rythme de l’Atlas.', 'navigation' => 'Navigation', 'contact' => 'Contact', 'follow' => 'Suivez-nous', 'location' => 'Quartier des Riads, Marrakech', 'copyright' => '© 2026 Dar Anawat. Tous droits réservés.', 'tagline' => 'L’expérience d’une maison d’hôtes de luxe'],
+    'footer' => ['title' => 'Un luxe paisible au cœur du Maroc.', 'description' => 'Un accueil attentionné, un cadre chaleureux et des instants inoubliables au rythme de l’Atlas.', 'navigation' => 'Liens rapides', 'contact' => 'Contact', 'follow' => 'Suivez-nous', 'instagram' => 'Retrouvez-nous sur Instagram', 'whatsapp' => 'Écrivez-nous sur WhatsApp', 'location' => '48 Derb Jamaa, Rue Riad Zitoun el Kdim, Marrakech 40000, Morocco', 'copyright' => '© 2026 Dar Anawat. Tous droits réservés.', 'tagline' => 'L’expérience d’une maison d’hôtes de luxe'],
 ];

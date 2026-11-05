@@ -212,6 +212,5 @@ return [
             'reservation_not_deletable' => 'This reservation cannot be deleted after a transfer report, receipt, or payment decision.',
         ],
     ],
-    'footer' => ['title' => 'Quiet luxury in the heart of Morocco.', 'description' => 'Thoughtful hospitality, warm design, and unforgettable moments shaped by the rhythm of the Atlas.', 'navigation' => 'Navigation', 'contact' => 'Contact', 'follow' => 'Follow', 'location' => 'Riad District, Marrakech', 'copyright' => '© 2026 Dar Anawat. All rights reserved.', 'tagline' => 'A luxury guest house experience'],
     'footer' => ['title' => 'Quiet luxury in the heart of Morocco.', 'description' => 'Thoughtful hospitality, warm design, and unforgettable moments shaped by the rhythm of the Atlas.', 'navigation' => 'Quick links', 'contact' => 'Contact', 'follow' => 'Follow us', 'instagram' => 'Follow us on Instagram', 'whatsapp' => 'Message us on WhatsApp', 'location' => '48 Derb Jamaa, Rue Riad Zitoun el Kdim, Marrakech 40000, Morocco', 'copyright' => '© 2026 Dar Anawat. All rights reserved.', 'tagline' => 'A luxury guest house experience'],
 ];
