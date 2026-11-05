@@ -15,6 +15,8 @@ class PaymentDecision extends Model
 
     public const ACTION_RESERVATION_CONFIRMED = 'reservation_confirmed';
 
+    public const ACTION_RESERVATION_CANCELLED = 'reservation_cancelled';
+
     protected $fillable = [
         'payment_id',
         'administrator_id',

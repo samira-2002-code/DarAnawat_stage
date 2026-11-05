@@ -61,7 +61,15 @@ class PaymentController extends Controller
         $storedPath = $receipt?->store('receipts', 'payment_receipts');
 
         try {
-            DB::transaction(function () use ($request, $payment, $receipt, $storedPath): void {
+            DB::transaction(function () use ($request, $reservation, $payment, $receipt, $storedPath): void {
+                $lockedReservation = Reservation::query()->lockForUpdate()->findOrFail($reservation->getKey());
+
+                abort_unless(
+                    $lockedReservation->status === Reservation::STATUS_PENDING,
+                    409,
+                    __('site.payment.reservation_not_payable'),
+                );
+
                 $lockedPayment = Payment::query()->lockForUpdate()->findOrFail($payment->getKey());
 
                 abort_if(
