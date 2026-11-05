@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagrammes UML — Projet Dar Anawat</title>
+  <meta name="description" content="Diagrammes UML fondés sur le code actuel de Dar Anawat, site Laravel de maison d’hôtes.">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #183b36;
+      --muted: #566b66;
+      --gold: #a78347;
+      --line: #b8c4bd;
+      --paper: #fff;
+      --wash: #f6f3eb;
+      --mint: #e9f0ec;
+      --sand: #f2e8d5;
+      --red: #a45143;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: #e8e9e6; color: var(--ink); font-family: "Segoe UI", Arial, sans-serif; }
+    @page { size: A4 landscape; margin: 0; }
+    .page {
+      position: relative;
+      width: 297mm;
+      height: 210mm;
+      margin: 12px auto;
+      padding: 13mm 16mm 12mm;
+      background: var(--paper);
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+    .page:last-child { page-break-after: auto; break-after: auto; }
+    .eyebrow { margin: 0 0 4mm; color: var(--gold); font-size: 9pt; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 4mm; font-family: Georgia, "Times New Roman", serif; font-size: 29pt; line-height: 1.12; font-weight: 500; }
+    h2 { margin-bottom: 2.5mm; font-family: Georgia, "Times New Roman", serif; font-size: 22pt; line-height: 1.1; font-weight: 500; }
+    .explanation { margin: 0; color: var(--muted); font-size: 10pt; line-height: 1.42; }
+    .diagram-wrap { width: 100%; height: 145mm; margin-top: 3mm; }
+    .diagram-wrap svg { width: 100%; height: 100%; display: block; }
+    .footer { position: absolute; left: 16mm; right: 16mm; bottom: 6mm; display: flex; justify-content: space-between; border-top: 1px solid #e4e8e4; padding-top: 2.5mm; color: #71817c; font-size: 8pt; }
+    .cover { display: flex; flex-direction: column; justify-content: center; padding-left: 23mm; background: linear-gradient(112deg, #173d37 0%, #214c43 60%, #315b4e 100%); color: white; }
+    .cover::before, .cover::after { content: ""; position: absolute; border: 1px solid rgba(225,202,151,.35); border-radius: 50%; }
+    .cover::before { width: 160mm; height: 160mm; right: -30mm; top: 20mm; }
+    .cover::after { width: 125mm; height: 125mm; right: -13mm; top: 37mm; }
+    .cover-mark { position: absolute; right: 38mm; top: 68mm; width: 70mm; height: 70mm; border: 1px solid rgba(225,202,151,.62); border-radius: 50%; display: grid; place-items: center; color: #ead8b1; font-family: Georgia, serif; font-size: 28pt; letter-spacing: .12em; }
+    .cover .eyebrow { color: #e4c98f; }
+    .cover h1 { max-width: 175mm; margin-bottom: 9mm; font-size: 39pt; }
+    .cover .lead { max-width: 155mm; color: rgba(255,255,255,.82); font-size: 14pt; line-height: 1.6; }
+    .cover .meta { position: absolute; bottom: 16mm; left: 23mm; color: #e2d5ba; font-size: 9pt; letter-spacing: .08em; }
+    .toc { list-style: none; padding: 0; margin: 8mm 0 0; }
+    .toc li { display: flex; gap: 5mm; align-items: baseline; padding: 5mm 0; border-bottom: 1px solid #e8e9e4; font-size: 13pt; }
+    .toc .num { width: 9mm; color: var(--gold); font-weight: 700; }
+    .toc .page-no { margin-left: auto; color: var(--muted); font-size: 10pt; }
+    .toc-note { margin-top: 9mm; max-width: 220mm; padding: 5mm 7mm; border-left: 3px solid var(--gold); background: var(--wash); color: var(--muted); font-size: 10pt; line-height: 1.55; }
+    .svg-title { fill: var(--ink); font: 700 20px "Segoe UI", Arial, sans-serif; }
+    .svg-label { fill: var(--ink); font: 16px "Segoe UI", Arial, sans-serif; }
+    .svg-small { fill: var(--muted); font: 13px "Segoe UI", Arial, sans-serif; }
+    .svg-tiny { fill: var(--muted); font: 11px "Segoe UI", Arial, sans-serif; }
+    .uml-box { fill: #fff; stroke: #71877e; stroke-width: 2; }
+    .uml-head { fill: var(--mint); stroke: #71877e; stroke-width: 2; }
+    .uml-usecase { fill: var(--wash); stroke: var(--gold); stroke-width: 2; }
+    .uml-line { fill: none; stroke: #49675e; stroke-width: 2; }
+    .uml-dash { fill: none; stroke: #71877e; stroke-width: 1.6; stroke-dasharray: 7 6; }
+    .note-box { fill: #fbf7ed; stroke: #c9b88f; stroke-width: 1.5; }
+    .decision { fill: #f2e8d5; stroke: var(--gold); stroke-width: 2; }
+    .actor { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; }
+    @media print {
+      html, body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { margin: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="page cover">
+    <p class="eyebrow">Documentation technique · Laravel 12</p>
+    <h1>Diagrammes UML<br>– Projet Dar Anawat</h1>
+    <p class="lead">Modélisation des parcours réels du site : consultation des chambres et dépôt d’une demande de réservation.</p>
+    <div class="cover-mark" aria-hidden="true">DA</div>
+    <p class="meta">DOSSIER DE STAGE · ÉDITION DOCUMENTAIRE</p>
+  </section>
+
+  <section class="page">
+    <p class="eyebrow">Repères de lecture</p>
+    <h2>Sommaire</h2>
+    <p class="explanation">Les diagrammes sont fondés sur les routes, classes, migrations, vues et tests présents dans le dépôt.</p>
+    <ol class="toc">
+      <li><span class="num">01</span><span>Diagramme de cas d’utilisation</span><span class="page-no">3</span></li>
+      <li><span class="num">02</span><span>Diagramme de classes</span><span class="page-no">4</span></li>
+      <li><span class="num">03</span><span>Séquence — consultation des chambres</span><span class="page-no">5</span></li>
+      <li><span class="num">04</span><span>Séquence — demande de réservation</span><span class="page-no">6</span></li>
+      <li><span class="num">05</span><span>Activité — traitement d’une demande</span><span class="page-no">7</span></li>
+      <li><span class="num">06</span><span>États-transitions — réservation</span><span class="page-no">8</span></li>
+    </ol>
+    <div class="toc-note"><strong>Périmètre réel :</strong> la réservation crée une demande au statut <code>pending</code>. Aucun paiement, contrôle de disponibilité, confirmation métier ou espace administrateur n’est implémenté. Les chambres sont décrites par des tableaux PHP, et non par un modèle Eloquent dédié.</div>
+    <div class="footer"><span>Dar Anawat · Modélisation UML</span><span>02 / 08</span></div>
+  </section>
+
+  <section class="page">
+    <p class="eyebrow">01 · Fonctionnalités visibles</p>
+    <h2>Diagramme de cas d’utilisation</h2>
+    <p class="explanation">Le visiteur parcourt les chambres, change la langue et transmet une demande. L’administration et le paiement ne figurent pas dans les routes implémentées.</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1120 560" role="img" aria-labelledby="uc-title uc-desc">
+        <title id="uc-title">Cas d’utilisation du site Dar Anawat</title>
+        <desc id="uc-desc">Un visiteur consulte les chambres et leurs détails, change de langue, envoie une demande de réservation et reçoit son résultat.</desc>
+        <rect x="275" y="35" width="790" height="480" rx="8" fill="#fff" stroke="#526e64" stroke-width="2.5"/>
+        <rect x="275" y="35" width="790" height="48" fill="#e9f0ec" stroke="#526e64" stroke-width="2.5"/>
+        <text x="670" y="66" text-anchor="middle" class="svg-title">Système « Site Dar Anawat »</text>
+        <circle cx="112" cy="192" r="20" class="actor"/>
+        <path d="M112 212 L112 275 M78 235 L146 235 M112 275 L82 321 M112 275 L142 321" class="actor"/>
+        <text x="112" y="351" text-anchor="middle" class="svg-label">Client / visiteur</text>
+        <path d="M147 225 L310 155 M147 232 L310 235 M147 238 L310 315 M147 245 L310 395 M147 251 L310 465" class="uml-line"/>
+        <ellipse cx="510" cy="155" rx="200" ry="34" class="uml-usecase"/>
+        <ellipse cx="820" cy="155" rx="190" ry="34" class="uml-usecase"/>
+        <ellipse cx="510" cy="235" rx="200" ry="34" class="uml-usecase"/>
+        <ellipse cx="820" cy="315" rx="190" ry="34" class="uml-usecase"/>
+        <ellipse cx="510" cy="395" rx="200" ry="34" class="uml-usecase"/>
+        <ellipse cx="820" cy="465" rx="190" ry="34" class="uml-usecase"/>
+        <text x="510" y="161" text-anchor="middle" class="svg-label">Consulter la liste des chambres</text>
+        <text x="820" y="161" text-anchor="middle" class="svg-label">Consulter le détail d’une chambre</text>
+        <text x="510" y="241" text-anchor="middle" class="svg-label">Changer la langue de navigation</text>
+        <text x="820" y="321" text-anchor="middle" class="svg-label">Envoyer une demande de réservation</text>
+        <text x="510" y="401" text-anchor="middle" class="svg-label">Recevoir le résultat de la demande</text>
+        <text x="820" y="471" text-anchor="middle" class="svg-label">Sélectionner une chambre présélectionnée</text>
+        <rect x="842" y="355" width="198" height="38" rx="5" class="note-box"/>
+        <text x="941" y="371" text-anchor="middle" class="svg-tiny">Option : ?room=single|double|suite</text>
+        <text x="941" y="385" text-anchor="middle" class="svg-tiny">sur le formulaire de réservation</text>
+        <path d="M820 349 L900 355" class="uml-dash"/>
+        <text x="74" y="422" class="svg-small">Si authentifié, l’identifiant</text>
+        <text x="74" y="442" class="svg-small">utilisateur peut être associé.</text>
+        <text x="74" y="475" class="svg-small">Aucun parcours de connexion</text>
+        <text x="74" y="495" class="svg-small">n’est défini par ces routes.</text>
+      </svg>
+    </div>
+    <div class="footer"><span>Dar Anawat · Cas d’utilisation</span><span>03 / 08</span></div>
+  </section>
+
+  <section class="page">
+    <p class="eyebrow">02 · Structure applicative</p>
+    <h2>Diagramme de classes</h2>
+    <p class="explanation">Les classes Laravel, leurs signatures et la relation facultative utilisateur–réservation sont reprises du code. Les données de chambre ne constituent pas une classe persistée.</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1120 560" role="img" aria-labelledby="cl-title cl-desc">
+        <title id="cl-title">Classes applicatives de Dar Anawat</title>
+        <desc id="cl-desc">Diagramme des contrôleurs, requête, modèles, middleware et service devise utilisés réellement.</desc>
+        <defs>
+          <marker id="inherit" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L10 6 L1 11 Z" fill="#fff" stroke="#49675e" stroke-width="1.5"/></marker>
+          <marker id="assoc" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1 L8 5 L1 9 Z" fill="#49675e"/></marker>
+        </defs>
+        <rect x="25" y="18" width="270" height="60" rx="4" class="uml-head"/>
+        <text x="160" y="44" text-anchor="middle" class="svg-label" font-style="italic">Controller</text>
+        <text x="160" y="64" text-anchor="middle" class="svg-tiny">Illuminate\Routing\Controller</text>
+        <rect x="25" y="105" width="270" height="138" rx="4" class="uml-box"/>
+        <rect x="25" y="105" width="270" height="42" class="uml-head"/>
+        <text x="160" y="132" text-anchor="middle" class="svg-label">ReservationController</text>
+        <text x="42" y="173" class="svg-small">+ create(Request): View</text>
+        <text x="42" y="198" class="svg-small">+ store(StoreReservationRequest)</text>
+        <text x="58" y="218" class="svg-small">: RedirectResponse</text>
+        <path d="M160 105 L160 90 L160 82" class="uml-line" marker-end="url(#inherit)"/>
+
+        <rect x="345" y="18" width="270" height="60" rx="4" class="uml-head"/>
+        <text x="480" y="44" text-anchor="middle" class="svg-label">FormRequest</text>
+        <text x="480" y="64" text-anchor="middle" class="svg-tiny">Illuminate\Foundation\Http</text>
+        <rect x="345" y="105" width="270" height="160" rx="4" class="uml-box"/>
+        <rect x="345" y="105" width="270" height="42" class="uml-head"/>
+        <text x="480" y="132" text-anchor="middle" class="svg-label">StoreReservationRequest</text>
+        <text x="362" y="173" class="svg-small">+ authorize(): bool</text>
+        <text x="362" y="198" class="svg-small">+ rules(): array</text>
+        <text x="362" y="223" class="svg-small">+ after(): array</text>
+        <path d="M480 105 L480 90 L480 82" class="uml-line" marker-end="url(#inherit)"/>
+
+        <rect x="665" y="18" width="420" height="247" rx="6" fill="#fff" stroke="#b8c4bd" stroke-width="1.5"/>
+        <text x="685" y="45" class="svg-small" font-weight="700">SERVICES APPLICATIFS</text>
+        <rect x="685" y="61" width="180" height="176" rx="4" class="uml-box"/>
+        <rect x="685" y="61" width="180" height="42" class="uml-head"/>
+        <text x="775" y="88" text-anchor="middle" class="svg-label">SetLocale</text>
+        <text x="700" y="129" class="svg-small">+ handle(</text>
+        <text x="714" y="149" class="svg-small">Request, Closure)</text>
+        <text x="714" y="169" class="svg-small">: Response</text>
+        <text x="700" y="207" class="svg-tiny">Locale en session</text>
+        <rect x="885" y="61" width="180" height="176" rx="4" class="uml-box"/>
+        <rect x="885" y="61" width="180" height="42" class="uml-head"/>
+        <text x="975" y="88" text-anchor="middle" class="svg-label">Currency</text>
+        <text x="900" y="129" class="svg-small">+ formatMad(</text>
+        <text x="914" y="149" class="svg-small">price, locale?)</text>
+        <text x="914" y="169" class="svg-small">: string</text>
+        <text x="900" y="207" class="svg-tiny">Affichage MAD / EUR</text>
+
+        <rect x="190" y="315" width="470" height="225" rx="4" class="uml-box"/>
+        <rect x="190" y="315" width="470" height="42" class="uml-head"/>
+        <text x="425" y="342" text-anchor="middle" class="svg-label">Reservation · Eloquent Model</text>
+        <line x1="190" y1="357" x2="660" y2="357" stroke="#9eaea6" stroke-width="1.4"/>
+        <text x="208" y="381" class="svg-small">Champs persistés (migration) :</text>
+        <text x="208" y="402" class="svg-tiny">id, user_id?, guest_name, guest_email, guest_phone?</text>
+        <text x="208" y="422" class="svg-tiny">room_type, check_in, check_out, guests, special_requests?</text>
+        <text x="208" y="442" class="svg-tiny">status = pending par défaut, created_at, updated_at</text>
+        <line x1="190" y1="456" x2="660" y2="456" stroke="#9eaea6" stroke-width="1.4"/>
+        <text x="208" y="482" class="svg-small">+ ROOM_CAPACITIES : single=1, double=2, suite=4</text>
+        <text x="208" y="510" class="svg-small"># casts(): array   ·   + user(): BelongsTo</text>
+
+        <rect x="785" y="345" width="280" height="175" rx="4" class="uml-box"/>
+        <rect x="785" y="345" width="280" height="42" class="uml-head"/>
+        <text x="925" y="372" text-anchor="middle" class="svg-label">User · Authenticatable</text>
+        <text x="803" y="413" class="svg-small">id, name, email, password</text>
+        <text x="803" y="437" class="svg-small">email_verified_at?, remember_token?</text>
+        <line x1="785" y1="452" x2="1065" y2="452" stroke="#9eaea6" stroke-width="1.4"/>
+        <text x="803" y="480" class="svg-small"># casts(): array</text>
+        <text x="803" y="503" class="svg-small">+ reservations(): HasMany</text>
+
+        <path d="M295 174 L320 174 L320 25 L332 25" class="uml-dash" marker-end="url(#inherit)"/>
+        <path d="M425 265 L425 292 L425 315" class="uml-dash" marker-end="url(#assoc)"/>
+        <text x="439" y="291" class="svg-tiny">ROOM_CAPACITIES</text>
+        <path d="M295 205 L320 205 L320 290 L215 290 L215 315" class="uml-dash" marker-end="url(#assoc)"/>
+        <text x="228" y="284" class="svg-tiny">crée</text>
+        <path d="M660 422 L785 422" class="uml-line"/>
+        <text x="672" y="410" class="svg-tiny">0..* réservations</text>
+        <text x="721" y="442" class="svg-tiny">0..1 utilisateur · user_id nullable</text>
+        <rect x="24" y="390" width="145" height="105" rx="5" class="note-box"/>
+        <text x="38" y="415" class="svg-tiny">Pas de classe Room :</text>
+        <text x="38" y="435" class="svg-tiny">les chambres sont des</text>
+        <text x="38" y="455" class="svg-tiny">tableaux PHP statiques.</text>
+        <text x="38" y="478" class="svg-tiny">Pas de classe Payment.</text>
+      </svg>
+    </div>
+    <div class="footer"><span>Dar Anawat · Classes et données</span><span>04 / 08</span></div>
+  </section>
+
+  <section class="page">
+    <p class="eyebrow">03 · Parcours de consultation</p>
+    <h2>Séquence — consultation des chambres</h2>
+    <p class="explanation">Les routes Laravel rendent directement des vues Blade. La liste utilise des données statiques ; le détail est choisi selon le type d’URL.</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1120 560" role="img" aria-labelledby="sq1-title sq1-desc">
+        <title id="sq1-title">Séquence de consultation d’une chambre</title>
+        <desc id="sq1-desc">Le navigateur demande la liste des chambres puis ouvre une fiche par son type.</desc>
+        <defs><marker id="arrow1" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#49675e"/></marker></defs>
+        <g class="svg-small" text-anchor="middle">
+          <text x="90" y="34">Client</text><text x="280" y="34">Navigateur</text><text x="500" y="34">Routeur Laravel</text><text x="745" y="34">Vue chambres</text><text x="980" y="34">Vue détail</text>
+        </g>
+        <g fill="#e9f0ec" stroke="#71877e" stroke-width="1.5">
+          <rect x="45" y="48" width="90" height="42" rx="4"/><rect x="235" y="48" width="90" height="42" rx="4"/>
+          <rect x="445" y="48" width="110" height="42" rx="4"/><rect x="685" y="48" width="120" height="42" rx="4"/>
+          <rect x="930" y="48" width="100" height="42" rx="4"/>
+        </g>
+        <g class="uml-dash"><path d="M90 90 V525"/><path d="M280 90 V525"/><path d="M500 90 V525"/><path d="M745 90 V525"/><path d="M980 90 V525"/></g>
+        <g class="uml-line" marker-end="url(#arrow1)">
+          <path d="M90 125 H280"/><path d="M280 175 H500"/><path d="M500 225 H745"/>
+          <path d="M745 275 H500"/><path d="M500 305 H280"/><path d="M280 355 H90"/>
+          <path d="M90 400 H280"/><path d="M280 445 H500"/><path d="M500 485 H980"/><path d="M980 515 H280"/>
+        </g>
+        <g class="svg-small">
+          <text x="170" y="117">1. Ouvre « Chambres »</text><text x="355" y="167">2. GET /chambres</text>
+          <text x="580" y="217">3. Exécute la route et la vue</text><text x="570" y="267">4. HTML avec room-card répété</text>
+          <text x="365" y="297">5. Réponse HTML</text><text x="165" y="347">6. Affiche les chambres</text>
+          <text x="162" y="392">7. Clique sur une chambre</text><text x="350" y="437">8. GET /chambres/{type}</text>
+          <text x="595" y="477">9. Type trouvé dans le tableau PHP</text><text x="610" y="507">10. Vue détail : room + chambres similaires</text>
+        </g>
+        <rect x="615" y="330" width="250" height="68" rx="5" class="note-box"/>
+        <text x="630" y="353" class="svg-tiny">Types reconnus : single, double, suite.</text>
+        <text x="630" y="375" class="svg-tiny">Type inconnu : réponse HTTP 404.</text>
+        <path d="M640 398 L530 425" class="uml-dash"/>
+      </svg>
+    </div>
+    <div class="footer"><span>Dar Anawat · Séquence de consultation</span><span>05 / 08</span></div>
+  </section>
+
+  <section class="page">
+    <p class="eyebrow">04 · Parcours de réservation réellement disponible</p>
+    <h2>Séquence — demande de réservation</h2>
+    <p class="explanation">La soumission valide les données, enregistre une demande en attente et retourne une référence. Il n’y a ni confirmation de disponibilité ni paiement.</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1120 560" role="img" aria-labelledby="sq2-title sq2-desc">
+        <title id="sq2-title">Séquence du formulaire de demande de réservation</title>
+        <desc id="sq2-desc">GET formulaire, POST avec limitation, validation, insertion pending, puis redirection et référence.</desc>
+        <defs><marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#49675e"/></marker></defs>
+        <g class="svg-tiny" text-anchor="middle">
+          <text x="75" y="30">Client</text><text x="245" y="30">Navigateur</text><text x="420" y="30">Middleware</text>
+          <text x="610" y="30">FormRequest</text><text x="815" y="30">Contrôleur</text><text x="1030" y="30">Base de données</text>
+        </g>
+        <g fill="#e9f0ec" stroke="#71877e" stroke-width="1.5">
+          <rect x="35" y="42" width="80" height="38" rx="4"/><rect x="205" y="42" width="80" height="38" rx="4"/>
+          <rect x="375" y="42" width="90" height="38" rx="4"/><rect x="560" y="42" width="100" height="38" rx="4"/>
+          <rect x="765" y="42" width="100" height="38" rx="4"/><rect x="980" y="42" width="100" height="38" rx="4"/>
+        </g>
+        <g class="uml-dash"><path d="M75 80 V535"/><path d="M245 80 V535"/><path d="M420 80 V535"/><path d="M610 80 V535"/><path d="M815 80 V535"/><path d="M1030 80 V535"/></g>
+        <g fill="#f2e8d5" stroke="#a78347" stroke-width="1"><rect x="802" y="160" width="26" height="300"/><rect x="597" y="230" width="26" height="75"/><rect x="1007" y="370" width="46" height="40"/></g>
+        <g class="uml-line" marker-end="url(#arrow2)">
+          <path d="M75 112 H245"/><path d="M245 145 H815"/><path d="M815 180 H245"/>
+          <path d="M75 220 H245"/><path d="M245 255 H420"/><path d="M420 285 H610"/>
+          <path d="M610 315 H815"/><path d="M815 360 H1030"/><path d="M1030 395 H815"/>
+          <path d="M815 430 H245"/><path d="M245 465 H75"/>
+        </g>
+        <g class="svg-tiny">
+          <text x="120" y="105">1. Demande le formulaire</text>
+          <text x="444" y="138">2. GET /reservation?room=…</text>
+          <text x="490" y="173">3. Vue reservations.create</text>
+          <text x="105" y="213">4. Saisit et envoie le formulaire</text>
+          <text x="286" y="248">5. POST /reservation</text>
+          <text x="475" y="278">6. CSRF + throttle 10/min</text>
+          <text x="625" y="308">7. authorize + rules + after</text>
+          <text x="858" y="353">8. INSERT user_id? / pending</text>
+          <text x="867" y="388">9. Identifiant créé</text>
+          <text x="470" y="423">10. Redirection + flash référence</text>
+          <text x="110" y="458">11. Affiche le résultat</text>
+        </g>
+        <rect x="300" y="330" width="335" height="62" rx="5" class="note-box"/>
+        <text x="316" y="353" class="svg-tiny">Échec de validation : retour au formulaire</text>
+        <text x="316" y="375" class="svg-tiny">avec erreurs ; aucune insertion en base.</text>
+        <path d="M610 305 L610 330" class="uml-dash"/>
+        <rect x="700" y="485" width="385" height="44" rx="5" class="note-box"/>
+        <text x="712" y="512" class="svg-tiny">Pas de paiement, disponibilité ou statut « confirmé » implémenté.</text>
+      </svg>
+    </div>
+    <div class="footer"><span>Dar Anawat · Séquence de réservation</span><span>06 / 08</span></div>
+  </section>
+
+  <section class="page">
+    <p class="eyebrow">05 · Décisions et validations</p>
+    <h2>Activité — traitement d’une demande</h2>
+    <p class="explanation">Les branches correspondent au contrôle du type présélectionné, au middleware de limitation et aux règles de `StoreReservationRequest`.</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1120 560" role="img" aria-labelledby="act-title act-desc">
+        <title id="act-title">Activité de réservation</title>
+        <desc id="act-desc">Diagramme de flux du formulaire, vérification des capacités, création pending et réponses d'erreur.</desc>
+        <defs><marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#49675e"/></marker></defs>
+        <rect x="25" y="20" width="720" height="520" fill="#fff" stroke="#b8c4bd" stroke-width="1.5"/>
+        <rect x="25" y="20" width="720" height="40" fill="#e9f0ec" stroke="#b8c4bd" stroke-width="1.5"/>
+        <rect x="745" y="20" width="350" height="520" fill="#fbfaf7" stroke="#b8c4bd" stroke-width="1.5"/>
+        <rect x="745" y="20" width="350" height="40" fill="#f2e8d5" stroke="#b8c4bd" stroke-width="1.5"/>
+        <text x="385" y="46" text-anchor="middle" class="svg-small" font-weight="700">APPLICATION LARAVEL</text>
+        <text x="920" y="46" text-anchor="middle" class="svg-small" font-weight="700">SORTIES / CAS DE REJET</text>
+        <circle cx="390" cy="78" r="10" fill="#183b36"/>
+        <path d="M390 88 V100" class="uml-line" marker-end="url(#arrow3)"/>
+        <rect x="270" y="102" width="240" height="38" rx="18" class="uml-box"/>
+        <text x="390" y="126" text-anchor="middle" class="svg-small">GET /reservation</text>
+        <path d="M390 140 V151" class="uml-line" marker-end="url(#arrow3)"/>
+        <polygon points="390,152 475,184 390,216 305,184" class="decision"/>
+        <text x="390" y="180" text-anchor="middle" class="svg-tiny">room fourni et type</text><text x="390" y="196" text-anchor="middle" class="svg-tiny">reconnu ?</text>
+        <text x="490" y="178" class="svg-tiny">non</text>
+        <path d="M475 184 H630 V220" class="uml-line" marker-end="url(#arrow3)"/>
+        <rect x="525" y="222" width="210" height="38" rx="4" class="note-box"/>
+        <text x="630" y="246" text-anchor="middle" class="svg-tiny">404 si type invalide</text>
+        <path d="M390 216 V228" class="uml-line" marker-end="url(#arrow3)"/>
+        <text x="398" y="227" class="svg-tiny">oui</text>
+        <rect x="270" y="230" width="240" height="38" rx="18" class="uml-box"/>
+        <text x="390" y="254" text-anchor="middle" class="svg-small">Afficher le formulaire</text>
+        <path d="M390 268 V279" class="uml-line" marker-end="url(#arrow3)"/>
+        <rect x="270" y="281" width="240" height="38" rx="18" class="uml-box"/>
+        <text x="390" y="305" text-anchor="middle" class="svg-small">POST /reservation</text>
+        <path d="M390 319 V330" class="uml-line" marker-end="url(#arrow3)"/>
+        <rect x="270" y="332" width="240" height="38" rx="18" class="uml-box"/>
+        <text x="390" y="356" text-anchor="middle" class="svg-small">CSRF + throttle 10/min</text>
+        <path d="M390 370 V382" class="uml-line" marker-end="url(#arrow3)"/>
+        <polygon points="390,383 480,421 390,459 300,421" class="decision"/>
+        <text x="390" y="417" text-anchor="middle" class="svg-tiny">Champs, dates et</text><text x="390" y="433" text-anchor="middle" class="svg-tiny">capacité valides ?</text>
+        <path d="M480 421 H630 V432" class="uml-line" marker-end="url(#arrow3)"/>
+        <text x="496" y="413" class="svg-tiny">non</text>
+        <rect x="525" y="434" width="210" height="42" rx="4" class="note-box"/>
+        <text x="630" y="451" text-anchor="middle" class="svg-tiny">Retour formulaire</text><text x="630" y="468" text-anchor="middle" class="svg-tiny">avec erreurs</text>
+        <path d="M390 459 V478" class="uml-line" marker-end="url(#arrow3)"/>
+        <text x="398" y="474" class="svg-tiny">oui</text>
+        <rect x="270" y="480" width="240" height="42" rx="18" class="uml-box"/>
+        <text x="390" y="506" text-anchor="middle" class="svg-tiny">Créer status=pending; user_id?</text>
+        <rect x="780" y="100" width="285" height="88" rx="6" class="note-box"/>
+        <text x="799" y="126" class="svg-small" font-weight="700">Validations serveur</text>
+        <text x="799" y="149" class="svg-tiny">Nom/e-mail, type autorisé, dates</text>
+        <text x="799" y="169" class="svg-tiny">futures, départ après arrivée, capacité</text>
+        <rect x="780" y="220" width="285" height="90" rx="6" class="note-box"/>
+        <text x="799" y="247" class="svg-small" font-weight="700">Données facultatives</text>
+        <text x="799" y="271" class="svg-tiny">Téléphone, demandes spéciales,</text>
+        <text x="799" y="291" class="svg-tiny">utilisateur authentifié associé ou null</text>
+        <rect x="780" y="342" width="285" height="96" rx="6" class="note-box"/>
+        <text x="799" y="369" class="svg-small" font-weight="700">Après enregistrement</text>
+        <text x="799" y="393" class="svg-tiny">Redirection vers le formulaire</text>
+        <text x="799" y="414" class="svg-tiny">et message flash avec l’identifiant</text>
+        <rect x="780" y="461" width="285" height="66" rx="6" fill="#f8eeeb" stroke="#c18478" stroke-width="1.5"/>
+        <text x="799" y="486" class="svg-tiny" fill="#8b4538">Aucun contrôle de disponibilité</text>
+        <text x="799" y="507" class="svg-tiny" fill="#8b4538">ou paiement n’est effectué.</text>
+      </svg>
+    </div>
+    <div class="footer"><span>Dar Anawat · Activité de réservation</span><span>07 / 08</span></div>
+  </section>
+
+  <section class="page">
+    <p class="eyebrow">06 · Cycle de vie défini dans le code</p>
+    <h2>États-transitions — réservation</h2>
+    <p class="explanation">La migration et le contrôleur fixent le statut initial à `pending`. Aucun autre statut ni transition métier n’est défini dans l’implémentation examinée.</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1120 560" role="img" aria-labelledby="st-title st-desc">
+        <title id="st-title">État d’une réservation enregistrée</title>
+        <desc id="st-desc">À sa création, une réservation entre dans l'unique état connu en attente, sans transition ultérieure définie.</desc>
+        <defs><marker id="arrow4" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L10 6 L1 11 Z" fill="#fff" stroke="#49675e" stroke-width="1.5"/></marker></defs>
+        <circle cx="190" cy="270" r="15" fill="#183b36"/>
+        <path d="M205 270 H405" class="uml-line" marker-end="url(#arrow4)"/>
+        <text x="300" y="248" text-anchor="middle" class="svg-small">création de Reservation</text>
+        <rect x="410" y="205" width="310" height="130" rx="25" fill="#e9f0ec" stroke="#526e64" stroke-width="2.5"/>
+        <text x="565" y="258" text-anchor="middle" class="svg-title">En attente</text>
+        <text x="565" y="290" text-anchor="middle" class="svg-label">(pending)</text>
+        <rect x="790" y="170" width="260" height="200" rx="7" class="note-box"/>
+        <text x="815" y="205" class="svg-label" font-weight="700">Constat de code</text>
+        <text x="815" y="238" class="svg-small">• Migration : défaut « pending »</text>
+        <text x="815" y="267" class="svg-small">• Contrôleur : status = pending</text>
+        <text x="815" y="296" class="svg-small">• Tests : demandes conservées</text>
+        <text x="827" y="318" class="svg-small">en attente, même chevauchantes</text>
+        <path d="M720 270 H790" class="uml-dash"/>
+        <rect x="210" y="420" width="705" height="64" rx="6" fill="#f8eeeb" stroke="#c18478" stroke-width="1.5"/>
+        <text x="562" y="447" text-anchor="middle" class="svg-small" fill="#8b4538">Aucune transition vers « confirmée », « payée » ou « annulée » n’est implémentée.</text>
+        <text x="562" y="470" text-anchor="middle" class="svg-small" fill="#8b4538">Aucune règle d’administration ou de paiement n’est représentée.</text>
+      </svg>
+    </div>
+    <div class="footer"><span>Dar Anawat · États de réservation</span><span>08 / 08</span></div>
+  </section>
+</body>
+</html>

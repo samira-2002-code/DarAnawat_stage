@@ -6,6 +6,11 @@ use InvalidArgumentException;
 
 class Currency
 {
+    public static function formatDh(int|float $price): string
+    {
+        return number_format($price, 0, ',', ' ').' DH';
+    }
+
     public static function formatMad(int|float|string $madPrice, ?string $locale = null): string
     {
         $baseCurrency = config('currency.base');

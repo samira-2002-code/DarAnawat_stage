@@ -1,0 +1,268 @@
+@startuml
+title Diagramme de cas d’utilisation — Dar Anawat
+left to right direction
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #F7F3EA
+  BorderColor #876B3E
+  ArrowColor #35564E
+}
+actor "Client / visiteur" as Client
+rectangle "Site Dar Anawat" as Site {
+  usecase "Consulter la liste\ndes chambres" as UC1
+  usecase "Consulter le détail\nd’une chambre" as UC2
+  usecase "Changer la langue\nde navigation" as UC3
+  usecase "Envoyer une demande\nde réservation" as UC4
+  usecase "Recevoir le résultat\nde la demande" as UC5
+}
+Client -- UC1
+Client -- UC2
+Client -- UC3
+Client -- UC4
+Client -- UC5
+note bottom of UC4
+Le dépôt crée une demande en attente.
+Aucune confirmation de disponibilité ou de paiement.
+end note
+note right of Client
+Un compte authentifié peut être associé
+à la demande, mais aucun parcours
+de connexion n’est défini ici.
+end note
+note bottom of Site
+Aucun acteur Administrateur ni fonctionnalité
+d’administration n’est implémenté dans les routes.
+end note
+@enduml
+
+@startuml
+title Diagramme de classes — réservation et services applicatifs
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #F7F3EA
+  BorderColor #876B3E
+  ArrowColor #35564E
+}
+package "Application Dar Anawat" {
+  abstract class Controller
+  class ReservationController {
+    +create(request: Request): View
+    +store(request: StoreReservationRequest): RedirectResponse
+  }
+  class StoreReservationRequest {
+    +authorize(): bool
+    +rules(): array
+    +after(): array
+  }
+  class Reservation {
+    +ROOM_CAPACITIES: map
+    -user_id: int?
+    -guest_name: string
+    -guest_email: string
+    -guest_phone: string?
+    -room_type: string
+    -check_in: date
+    -check_out: date
+    -guests: int
+    -special_requests: text?
+    -status: string = "pending"
+    +casts(): array
+    +user(): BelongsTo
+  }
+  class User {
+    -id: int
+    -name: string
+    -email: string
+    -email_verified_at: datetime?
+    -password: string
+    -remember_token: string?
+    +casts(): array
+    +reservations(): HasMany
+  }
+  class SetLocale {
+    +handle(request: Request, next: Closure): Response
+  }
+  class Currency {
+    +formatMad(price: int|float|string, locale?: string): string
+  }
+}
+package "Laravel / framework" {
+  class FormRequest
+  class Model
+  class Authenticatable
+  class Request
+  class Response
+  class View
+  class RedirectResponse
+}
+Controller <|-- ReservationController
+FormRequest <|-- StoreReservationRequest
+Model <|-- Reservation
+Authenticatable <|-- User
+Request ..> ReservationController : paramètres HTTP
+ReservationController ..> StoreReservationRequest : valide
+ReservationController ..> Reservation : crée
+StoreReservationRequest ..> Reservation : ROOM_CAPACITIES
+SetLocale ..> Request : lit session
+SetLocale ..> Response : transmet
+User "0..1" <-- "0..*" Reservation : user_id nullable\nuser() / reservations()
+note bottom of Reservation
+Schéma de la table reservations :
+id, user_id nullable, coordonnées invité,
+room_type, dates, guests, demandes spéciales,
+status (défaut pending), timestamps.
+end note
+note right of Reservation
+Les chambres sont des tableaux PHP statiques
+dans les vues et routes ; aucun modèle Room.
+end note
+note bottom of Currency
+Service d’affichage des prix uniquement ;
+aucune écriture de prix ou de paiement.
+end note
+@enduml
+
+@startuml
+title Séquence — consultation des chambres
+autonumber
+actor "Client / visiteur" as Client
+participant "Navigateur" as Browser
+participant "Routeur Laravel\n(routes/web.php)" as Router
+participant "Vue chambres.blade.php" as RoomsView
+participant "Composant room-card" as Card
+participant "Vue chambre-details.blade.php" as DetailView
+Client -> Browser : Ouvre « Chambres »
+Browser -> Router : GET /chambres
+Router -> RoomsView : Exécute la vue de liste
+note right of RoomsView
+La liste et ses prix sont
+des tableaux PHP statiques.
+end note
+loop Pour chaque chambre
+  RoomsView -> Card : Rend la carte
+  Card --> RoomsView : Image, informations,\nlien de détail
+end
+RoomsView --> Browser : HTML de la liste
+Browser --> Client : Affiche les chambres
+Client -> Browser : Sélectionne « Voir détails »
+Browser -> Router : GET /chambres/{type}
+Router -> Router : Cherche le type dans\nle tableau de chambres
+alt Type reconnu (single, double, suite)
+  Router -> DetailView : Transmet room et rooms
+  DetailView --> Browser : HTML du détail et cartes similaires
+  Browser --> Client : Affiche la fiche chambre
+else Type inconnu
+  Router --> Browser : 404
+end
+@enduml
+
+@startuml
+title Séquence — demande de réservation
+autonumber
+actor "Client / visiteur" as Client
+participant "Navigateur" as Browser
+participant "Routeur / middleware Laravel" as Router
+participant "ReservationController" as Controller
+participant "StoreReservationRequest" as FormRequest
+database "Base de données" as DB
+Client -> Browser : Ouvre le formulaire\n(option room=double)
+Browser -> Router : GET /reservation?room=double
+Router -> Controller : create(Request)
+Controller -> Controller : Vérifie room avec\nROOM_CAPACITIES
+alt Type présélectionné invalide
+  Controller --> Browser : 404
+else Type absent ou reconnu
+  Controller --> Browser : Vue reservations.create
+  Browser --> Client : Formulaire de demande
+end
+Client -> Browser : Envoie le formulaire
+Browser -> Router : POST /reservation
+Router -> Router : CSRF et limite 10 requêtes/minute
+Router -> FormRequest : autorise + rules() + after()
+FormRequest -> FormRequest : Vérifie champs, dates,\nchambre et capacité
+alt Requête invalide
+  FormRequest --> Browser : Redirection avec erreurs
+  Browser --> Client : Réaffiche le formulaire
+else Requête valide
+  FormRequest --> Controller : Données validées
+  Controller -> DB : INSERT reservation\nuser_id nullable, status=pending
+  DB --> Controller : Identifiant de la demande
+  Controller --> Browser : Redirection + message flash\navec référence
+  Browser --> Client : Affiche le résultat de la demande
+end
+note over Client,DB
+Aucun contrôle de disponibilité, paiement
+ou passage à un état confirmé n’est exécuté.
+end note
+@enduml
+
+@startuml
+title Activité — traitement d’une demande de réservation
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F7F3EA
+  BorderColor #876B3E
+  DiamondBackgroundColor #EFE3CA
+  DiamondBorderColor #876B3E
+  ArrowColor #35564E
+}
+start
+:GET /reservation;
+if (Paramètre room fourni ?) then (oui)
+  :Vérifier le type dans ROOM_CAPACITIES;
+  if (Type reconnu ?) then (non)
+    :Réponse 404;
+    stop
+  endif
+endif
+:Afficher le formulaire;
+:POST /reservation;
+:Middleware CSRF et throttle\n10 requêtes / minute;
+:StoreReservationRequest.authorize() = true;
+:Valider nom, e-mail, chambre,\ndates, nombre de voyageurs et limites;
+if (Validation standard réussie ?) then (non)
+  :Redirection précédente\navec erreurs;
+  stop
+endif
+:Vérifier la capacité de la chambre;
+if (Voyageurs ≤ capacité ?) then (non)
+  :Ajouter erreur sur guests;\nRedirection précédente;
+  stop
+endif
+:Créer Reservation avec status = pending;
+:Associer user_id si utilisateur déjà authentifié;
+:Rediriger vers le formulaire\navec référence en session;
+stop
+note right
+Les demandes chevauchantes restent
+en attente : disponibilité non contrôlée.
+Aucun paiement ni confirmation.
+end note
+@enduml
+
+@startuml
+title États-transitions — réservation
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #F7F3EA
+  BorderColor #876B3E
+  ArrowColor #35564E
+}
+[*] --> EnAttente : création de Reservation\nstatus = "pending"
+state "En attente\n(pending)" as EnAttente
+note right of EnAttente
+Seul état défini par le défaut
+de la migration et le contrôleur.
+Aucune transition métier vers
+confirmée, payée ou annulée.
+end note
+@enduml
