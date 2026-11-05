@@ -11,6 +11,10 @@
                 <p class="section-kicker !text-[#ebd3a4]">{{ __('site.owner.kicker') }}</p>
                 <h1 class="font-display max-w-3xl text-5xl leading-[0.95] tracking-[-0.04em] md:text-7xl">{{ __('site.owner.dashboard_title') }}</h1>
                 <p class="mt-6 max-w-2xl text-sm leading-7 text-white/75 md:text-base">{{ __('site.owner.intro') }}</p>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a class="gold-button" href="{{ route('owner.reservations.index') }}">{{ __('site.owner.reservations.manage_button') }}</a>
+                    <a class="rounded-full border border-white/50 px-5 py-3 text-sm font-semibold" href="{{ route('owner.reservations.create') }}">{{ __('site.owner.reservations.create_button') }}</a>
+                </div>
             </div>
         </section>
 

@@ -24,6 +24,11 @@
         </div>
     </div>
 
+    <div class="mt-4 flex flex-wrap gap-3">
+        <a class="rounded-full border border-[#8c6632] px-4 py-2 text-xs font-semibold text-[#704d20]" href="{{ route('owner.reservations.show', $reservation) }}">{{ __('site.owner.reservations.view') }}</a>
+        <a class="rounded-full border border-[#8c6632] px-4 py-2 text-xs font-semibold text-[#704d20]" href="{{ route('owner.reservations.edit', $reservation) }}">{{ __('site.owner.reservations.edit_button') }}</a>
+    </div>
+
     @if ($reservation->payment)
         <div class="mt-5 border-t border-[#e7ddca] pt-5">
             @if ($reservation->payment->receipts->isNotEmpty())

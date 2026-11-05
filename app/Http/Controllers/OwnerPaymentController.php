@@ -17,10 +17,12 @@ class OwnerPaymentController extends Controller
     public function verify(VerifyPaymentRequest $request, Payment $payment): RedirectResponse
     {
         DB::transaction(function () use ($request, $payment): void {
+            $reservation = Reservation::query()->lockForUpdate()->findOrFail($payment->reservation_id);
             $payment = Payment::query()->lockForUpdate()->findOrFail($payment->getKey());
 
             abort_unless(
-                in_array($payment->status, [Payment::STATUS_AWAITING_TRANSFER, Payment::STATUS_REPORTED], true),
+                $reservation->status === Reservation::STATUS_PENDING
+                    && in_array($payment->status, [Payment::STATUS_AWAITING_TRANSFER, Payment::STATUS_REPORTED], true),
                 409,
                 __('site.owner.errors.payment_not_reviewable'),
             );
@@ -45,11 +47,14 @@ class OwnerPaymentController extends Controller
         PaymentReceipt $receipt,
     ): RedirectResponse {
         DB::transaction(function () use ($request, $receipt): void {
+            $initialPayment = Payment::query()->findOrFail($receipt->payment_id);
+            $reservation = Reservation::query()->lockForUpdate()->findOrFail($initialPayment->reservation_id);
             $payment = Payment::query()->lockForUpdate()->findOrFail($receipt->payment_id);
             $receipt = PaymentReceipt::query()->lockForUpdate()->findOrFail($receipt->getKey());
 
             abort_unless(
-                $receipt->payment_id === $payment->getKey()
+                $reservation->status === Reservation::STATUS_PENDING
+                    && $receipt->payment_id === $payment->getKey()
                     && $receipt->status === 'submitted'
                     && in_array($payment->status, [Payment::STATUS_AWAITING_TRANSFER, Payment::STATUS_REPORTED], true),
                 409,
@@ -78,10 +83,12 @@ class OwnerPaymentController extends Controller
         Payment $payment,
     ): RedirectResponse {
         DB::transaction(function () use ($request, $payment): void {
+            $reservation = Reservation::query()->lockForUpdate()->findOrFail($payment->reservation_id);
             $payment = Payment::query()->lockForUpdate()->findOrFail($payment->getKey());
 
             abort_unless(
-                in_array($payment->status, [Payment::STATUS_AWAITING_TRANSFER, Payment::STATUS_REPORTED], true),
+                $reservation->status === Reservation::STATUS_PENDING
+                    && in_array($payment->status, [Payment::STATUS_AWAITING_TRANSFER, Payment::STATUS_REPORTED], true),
                 409,
                 __('site.owner.errors.payment_not_reviewable'),
             );
@@ -115,12 +122,12 @@ class OwnerPaymentController extends Controller
                 ->firstOrFail();
 
             abort_unless(
-                $reservation->status === 'pending' && $payment->status === Payment::STATUS_VERIFIED,
+                $reservation->status === Reservation::STATUS_PENDING && $payment->status === Payment::STATUS_VERIFIED,
                 409,
                 __('site.owner.errors.reservation_not_confirmable'),
             );
 
-            $reservation->update(['status' => 'confirmed']);
+            $reservation->update(['status' => Reservation::STATUS_CONFIRMED]);
             $payment->decisions()->create([
                 'administrator_id' => $request->user()->getAuthIdentifier(),
                 'action' => PaymentDecision::ACTION_RESERVATION_CONFIRMED,

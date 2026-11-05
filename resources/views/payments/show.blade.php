@@ -46,40 +46,51 @@
                             <dt class="font-semibold text-[#122b29]">{{ __('site.payment.status') }}</dt>
                             <dd class="mt-1">{{ __('site.payment.statuses.' . $reservation->payment->status) }}</dd>
                         </div>
-                        <div>
-                            <dt class="font-semibold text-[#122b29]">{{ __('site.payment.bank') }}</dt>
-                            <dd class="mt-1">{{ config('payment.bank_name') }}</dd>
-                        </div>
-                        @if (config('payment.beneficiary'))
+                        @unless ($reservation->status === \App\Models\Reservation::STATUS_CANCELLED)
                             <div>
-                                <dt class="font-semibold text-[#122b29]">{{ __('site.payment.beneficiary') }}</dt>
-                                <dd class="mt-1">{{ config('payment.beneficiary') }}</dd>
+                                <dt class="font-semibold text-[#122b29]">{{ __('site.payment.bank') }}</dt>
+                                <dd class="mt-1">{{ config('payment.bank_name') }}</dd>
                             </div>
-                        @endif
-                        <div class="sm:col-span-2">
-                            <dt class="font-semibold text-[#122b29]">{{ __('site.payment.rib') }}</dt>
-                            <dd class="mt-1 break-all font-mono text-base tracking-wide" data-rib-value>{{ config('payment.rib') }}</dd>
-                        </div>
+                            @if (config('payment.beneficiary'))
+                                <div>
+                                    <dt class="font-semibold text-[#122b29]">{{ __('site.payment.beneficiary') }}</dt>
+                                    <dd class="mt-1">{{ config('payment.beneficiary') }}</dd>
+                                </div>
+                            @endif
+                            <div class="sm:col-span-2">
+                                <dt class="font-semibold text-[#122b29]">{{ __('site.payment.rib') }}</dt>
+                                <dd class="mt-1 break-all font-mono text-base tracking-wide" data-rib-value>{{ config('payment.rib') }}</dd>
+                            </div>
+                        @endunless
                     </dl>
-                    <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-                        <button
-                            type="button"
-                            class="gold-button"
-                            data-copy-rib
-                            data-rib="{{ config('payment.rib') }}"
-                        >
-                            {{ __('site.payment.copy_rib') }}
-                        </button>
-                        <span class="text-sm text-[#4d5b56]" data-copy-rib-status aria-live="polite"></span>
-                    </div>
+                    @unless ($reservation->status === \App\Models\Reservation::STATUS_CANCELLED)
+                        <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <button
+                                type="button"
+                                class="gold-button"
+                                data-copy-rib
+                                data-rib="{{ config('payment.rib') }}"
+                            >
+                                {{ __('site.payment.copy_rib') }}
+                            </button>
+                            <span class="text-sm text-[#4d5b56]" data-copy-rib-status aria-live="polite"></span>
+                        </div>
+                    @endunless
                     <p class="mt-5 rounded-xl bg-white p-4 text-sm leading-6 text-[#4d5b56]">
-                        {{ $reservation->payment->status === \App\Models\Payment::STATUS_VERIFIED
-                            ? __('site.payment.verified_message')
-                            : __('site.payment.pending_verification') }}
+                        @if ($reservation->status === \App\Models\Reservation::STATUS_CANCELLED)
+                            {{ __('site.payment.cancelled_message') }}
+                        @elseif ($reservation->payment->status === \App\Models\Payment::STATUS_VERIFIED)
+                            {{ __('site.payment.verified_message') }}
+                        @else
+                            {{ __('site.payment.pending_verification') }}
+                        @endif
                     </p>
                 </section>
 
-                @if ($reservation->payment->status !== \App\Models\Payment::STATUS_VERIFIED)
+                @if (
+                    $reservation->status === \App\Models\Reservation::STATUS_PENDING
+                    && $reservation->payment->status !== \App\Models\Payment::STATUS_VERIFIED
+                )
                     <section class="mt-8" aria-labelledby="transfer-report-title">
                         <h2 id="transfer-report-title" class="font-display text-2xl text-[#122b29]">{{ __('site.payment.report_title') }}</h2>
                         <p class="mt-2 text-sm leading-6 text-[#4d5b56]">{{ __('site.payment.report_instructions') }}</p>

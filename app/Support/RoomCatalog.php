@@ -6,15 +6,9 @@ use App\Models\Reservation;
 
 class RoomCatalog
 {
-    public const PRICES = [
-        'single' => 800,
-        'double' => 1200,
-        'triple' => 1500,
-        'suite' => 1200,
-    ];
-
     public static function all(): array
     {
+        $prices = config('rooms.rates_mad');
         $images = [
             'single' => asset('images/rooms/atlas.jpg'),
             'double' => asset('images/rooms/palm.jpg'),
@@ -40,7 +34,7 @@ class RoomCatalog
         foreach (Reservation::ROOM_CAPACITIES as $slug => $capacity) {
             $rooms[$slug] = [
                 'slug' => $slug,
-                'price' => self::PRICES[$slug],
+                'price' => $prices[$slug],
                 'capacity' => $capacity,
                 'surface' => $surfaces[$slug] ?? null,
                 'image' => $images[$slug],

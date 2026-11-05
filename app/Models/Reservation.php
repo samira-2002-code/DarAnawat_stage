@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Reservation extends Model
 {
+    public const STATUS_PENDING = 'pending';
+
+    public const STATUS_CONFIRMED = 'confirmed';
+
+    public const STATUS_CANCELLED = 'cancelled';
+
     public const ROOM_CAPACITIES = [
         'single' => 1,
         'double' => 2,
