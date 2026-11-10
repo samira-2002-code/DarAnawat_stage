@@ -9,8 +9,11 @@ use App\Models\Payment;
 use App\Models\PaymentDecision;
 use App\Models\PaymentReceipt;
 use App\Models\Reservation;
+use App\Models\Room;
+use App\Support\RoomAvailability;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class OwnerPaymentController extends Controller
 {
@@ -113,8 +116,10 @@ class OwnerPaymentController extends Controller
     public function confirmReservation(
         ConfirmReservationRequest $request,
         Reservation $reservation,
+        RoomAvailability $availability,
     ): RedirectResponse {
-        DB::transaction(function () use ($request, $reservation): void {
+        DB::transaction(function () use ($request, $reservation, $availability): void {
+            $availability->lockAllCategories();
             $reservation = Reservation::query()->lockForUpdate()->findOrFail($reservation->getKey());
             $payment = Payment::query()
                 ->where('reservation_id', $reservation->getKey())
@@ -126,6 +131,34 @@ class OwnerPaymentController extends Controller
                 409,
                 __('site.owner.errors.reservation_not_confirmable'),
             );
+
+            $roomId = $request->validated('room_id');
+            $hasCategoryInventory = Room::query()
+                ->where('room_type', $reservation->room_type)
+                ->exists();
+
+            if ($roomId !== null) {
+                $room = $availability->assertRoomAvailable(
+                    (int) $roomId,
+                    $reservation->room_type,
+                    $reservation->check_in->toDateString(),
+                    $reservation->check_out->toDateString(),
+                    $reservation->getKey(),
+                );
+                $reservation->room()->associate($room);
+            } elseif ($hasCategoryInventory) {
+                throw ValidationException::withMessages([
+                    'room_id' => __('site.owner.errors.room_required'),
+                ]);
+            } else {
+                $availability->assertAvailable(
+                    $reservation->room_type,
+                    $reservation->check_in->toDateString(),
+                    $reservation->check_out->toDateString(),
+                    $reservation->getKey(),
+                    'availability',
+                );
+            }
 
             $reservation->update(['status' => Reservation::STATUS_CONFIRMED]);
             $payment->decisions()->create([

@@ -9,9 +9,12 @@ use App\Models\PaymentDecision;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Support\ReservationPricing;
+use App\Support\RoomAvailability;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class OwnerReservationController extends Controller
@@ -34,7 +37,7 @@ class OwnerReservationController extends Controller
         ]);
     }
 
-    public function store(OwnerReservationRequest $request): RedirectResponse
+    public function store(OwnerReservationRequest $request, RoomAvailability $availability): RedirectResponse
     {
         $data = $request->validated();
         $amountMad = ReservationPricing::amountFor(
@@ -43,7 +46,14 @@ class OwnerReservationController extends Controller
             $data['check_out'],
         );
 
-        $reservation = DB::transaction(function () use ($data, $amountMad): Reservation {
+        $reservation = DB::transaction(function () use ($data, $amountMad, $availability): Reservation {
+            $availability->lockAllCategories();
+            $availability->assertCategoryAvailable(
+                $data['room_type'],
+                $data['check_in'],
+                $data['check_out'],
+            );
+
             $reservation = Reservation::create([
                 ...$data,
                 'status' => Reservation::STATUS_PENDING,
@@ -62,11 +72,59 @@ class OwnerReservationController extends Controller
             ->with('status', __('site.owner.reservations.created'));
     }
 
-    public function show(Reservation $reservation): View
+    public function show(Reservation $reservation, RoomAvailability $availability): View
     {
-        $reservation->load(['user', 'payment.receipts', 'payment.decisions.administrator']);
+        $reservation->load(['user', 'room', 'payment.receipts', 'payment.decisions.administrator']);
 
-        return view('owner.reservations.show', ['reservation' => $reservation]);
+        $availableRooms = $reservation->status === Reservation::STATUS_CONFIRMED
+            ? $availability->availableRooms(
+                $reservation->room_type,
+                $reservation->check_in->toDateString(),
+                $reservation->check_out->toDateString(),
+                $reservation->getKey(),
+            )
+            : collect();
+
+        return view('owner.reservations.show', [
+            'reservation' => $reservation,
+            'availableRooms' => $availableRooms,
+        ]);
+    }
+
+    public function assignRoom(
+        Request $request,
+        Reservation $reservation,
+        RoomAvailability $availability,
+    ): RedirectResponse {
+        $data = $request->validate([
+            'room_id' => ['required', 'integer', Rule::exists('rooms', 'id')],
+        ]);
+
+        DB::transaction(function () use ($reservation, $availability, $data): void {
+            $availability->lockAllCategories();
+            $reservation = Reservation::query()->lockForUpdate()->findOrFail($reservation->getKey());
+
+            abort_unless(
+                $reservation->status === Reservation::STATUS_CONFIRMED,
+                409,
+                __('site.owner.errors.room_assignment_not_allowed'),
+            );
+
+            $room = $availability->assertRoomAvailable(
+                (int) $data['room_id'],
+                $reservation->room_type,
+                $reservation->check_in->toDateString(),
+                $reservation->check_out->toDateString(),
+                $reservation->getKey(),
+            );
+
+            $reservation->room()->associate($room);
+            $reservation->save();
+        });
+
+        return redirect()
+            ->route('owner.reservations.show', $reservation)
+            ->with('status', __('site.owner.rooms.assigned'));
     }
 
     public function edit(Reservation $reservation): View
@@ -79,11 +137,15 @@ class OwnerReservationController extends Controller
         ]);
     }
 
-    public function update(OwnerReservationRequest $request, Reservation $reservation): RedirectResponse
-    {
+    public function update(
+        OwnerReservationRequest $request,
+        Reservation $reservation,
+        RoomAvailability $availability,
+    ): RedirectResponse {
         $data = $request->validated();
 
-        DB::transaction(function () use ($data, $reservation): void {
+        DB::transaction(function () use ($data, $reservation, $availability): void {
+            $availability->lockAllCategories();
             $reservation = Reservation::query()->lockForUpdate()->findOrFail($reservation->getKey());
             $payment = Payment::query()
                 ->where('reservation_id', $reservation->getKey())
@@ -102,6 +164,12 @@ class OwnerReservationController extends Controller
                         && ! $payment->decisions()->exists(),
                     409,
                     __('site.owner.errors.reservation_not_editable'),
+                );
+
+                $availability->assertCategoryAvailable(
+                    $data['room_type'],
+                    $data['check_in'],
+                    $data['check_out'],
                 );
 
                 $payment->update([

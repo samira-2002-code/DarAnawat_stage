@@ -14,6 +14,7 @@
                 <div class="mt-6 flex flex-wrap gap-3">
                     <a class="gold-button" href="{{ route('owner.reservations.index') }}">{{ __('site.owner.reservations.manage_button') }}</a>
                     <a class="rounded-full border border-white/50 px-5 py-3 text-sm font-semibold" href="{{ route('owner.reservations.create') }}">{{ __('site.owner.reservations.create_button') }}</a>
+                    <a class="rounded-full border border-white/50 px-5 py-3 text-sm font-semibold" href="{{ route('owner.rooms.index') }}">{{ __('site.owner.rooms.title') }}</a>
                 </div>
             </div>
         </section>
@@ -42,7 +43,10 @@
                 </div>
 
                 @forelse ($pendingReservations as $reservation)
-                    @include('owner.partials.reservation-card', ['reservation' => $reservation])
+                    @include('owner.partials.reservation-card', [
+                        'reservation' => $reservation,
+                        'roomOptions' => $roomOptions[$reservation->getKey()],
+                    ])
                 @empty
                     <p class="rounded-2xl bg-[#f4eee3] p-5 text-sm leading-6 text-[#4d5b56]">{{ __('site.owner.no_pending') }}</p>
                 @endforelse
@@ -57,7 +61,10 @@
                 </div>
 
                 @forelse ($confirmedReservations as $reservation)
-                    @include('owner.partials.reservation-card', ['reservation' => $reservation])
+                    @include('owner.partials.reservation-card', [
+                        'reservation' => $reservation,
+                        'roomOptions' => ['hasInventory' => false, 'rooms' => collect()],
+                    ])
                 @empty
                     <p class="rounded-2xl bg-[#f4eee3] p-5 text-sm leading-6 text-[#4d5b56]">{{ __('site.owner.no_confirmed') }}</p>
                 @endforelse

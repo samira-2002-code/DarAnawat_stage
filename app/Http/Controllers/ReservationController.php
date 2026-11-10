@@ -6,6 +6,7 @@ use App\Http\Requests\StoreReservationRequest;
 use App\Models\Payment;
 use App\Models\Reservation;
 use App\Support\ReservationPricing;
+use App\Support\RoomAvailability;
 use App\Support\RoomCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class ReservationController extends Controller
         ]);
     }
 
-    public function store(StoreReservationRequest $request): RedirectResponse
+    public function store(StoreReservationRequest $request, RoomAvailability $availability): RedirectResponse
     {
         $validated = $request->validated();
         $amountMad = ReservationPricing::amountFor(
@@ -39,7 +40,14 @@ class ReservationController extends Controller
             $validated['check_out'],
         );
 
-        $reservation = DB::transaction(function () use ($request, $validated, $amountMad): Reservation {
+        $reservation = DB::transaction(function () use ($request, $validated, $amountMad, $availability): Reservation {
+            $availability->lockAllCategories();
+            $availability->assertCategoryAvailable(
+                $validated['room_type'],
+                $validated['check_in'],
+                $validated['check_out'],
+            );
+
             $reservation = Reservation::create([
                 ...$validated,
                 'user_id' => $request->user()?->getAuthIdentifier(),

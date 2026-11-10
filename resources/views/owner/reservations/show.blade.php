@@ -30,9 +30,35 @@
                     <div><dt class="text-sm font-semibold">{{ __('site.owner.reservations.guest_email') }}</dt><dd class="mt-1">{{ $reservation->guest_email }}</dd></div>
                     <div><dt class="text-sm font-semibold">{{ __('site.owner.reservations.guest_phone') }}</dt><dd class="mt-1">{{ $reservation->guest_phone ?: '—' }}</dd></div>
                     <div><dt class="text-sm font-semibold">{{ __('site.owner.room') }}</dt><dd class="mt-1">{{ __('site.rooms.'.$reservation->room_type.'.name') }} · {{ $reservation->guests }}</dd></div>
+                    @if ($reservation->room)
+                        <div><dt class="text-sm font-semibold">{{ __('site.owner.rooms.number') }}</dt><dd class="mt-1">{{ $reservation->room->room_number }}</dd></div>
+                    @endif
                     <div><dt class="text-sm font-semibold">{{ __('site.owner.dates') }}</dt><dd class="mt-1">{{ $reservation->check_in->format('d/m/Y') }} – {{ $reservation->check_out->format('d/m/Y') }}</dd></div>
                     <div class="sm:col-span-2"><dt class="text-sm font-semibold">{{ __('site.owner.reservations.special_requests') }}</dt><dd class="mt-1 whitespace-pre-line">{{ $reservation->special_requests ?: '—' }}</dd></div>
                 </dl>
+
+                @if ($reservation->status === \App\Models\Reservation::STATUS_CONFIRMED)
+                    <form action="{{ route('owner.reservations.assign-room', $reservation) }}" method="POST" class="mt-6 space-y-3 rounded-2xl bg-[#f4eee3] p-5">
+                        @csrf
+                        @if ($reservation->room_id)
+                            <p class="text-sm leading-6">{{ __('site.owner.rooms.reassignment_notice', ['room' => $reservation->room->room_number]) }}</p>
+                        @else
+                            <p class="text-sm leading-6">{{ __('site.owner.rooms.legacy_assignment_notice') }}</p>
+                        @endif
+                        <label class="block text-sm font-semibold" for="legacy-room">{{ __('site.owner.rooms.assign') }}</label>
+                        <select class="form-field" id="legacy-room" name="room_id" required>
+                            <option value="">{{ __('site.owner.rooms.choose') }}</option>
+                            @foreach ($availableRooms as $room)
+                                <option value="{{ $room->getKey() }}" @selected((string) old('room_id', $reservation->room_id) === (string) $room->getKey())>{{ $room->room_number }} · {{ __('site.owner.rooms.statuses.'.$room->status) }}</option>
+                            @endforeach
+                        </select>
+                        @error('room_id')<p class="text-sm text-red-700">{{ $message }}</p>@enderror
+                        @if ($availableRooms->isEmpty() || ($reservation->room_id && ! $availableRooms->contains('id', $reservation->room_id)))
+                            <p class="text-sm text-[#8a352b]">{{ __('site.owner.rooms.no_available_rooms') }}</p>
+                        @endif
+                        <button class="gold-button" type="submit">{{ $reservation->room_id ? __('site.owner.rooms.reassign_button') : __('site.owner.rooms.assign_button') }}</button>
+                    </form>
+                @endif
 
                 <div class="mt-6 border-t border-[#e7ddca] pt-5">
                     <h2 class="font-display text-2xl">{{ __('site.owner.amount') }}</h2>

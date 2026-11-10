@@ -27,6 +27,7 @@ class Reservation extends Model
         'guest_email',
         'guest_phone',
         'room_type',
+        'room_id',
         'check_in',
         'check_out',
         'guests',
@@ -50,5 +51,10 @@ class Reservation extends Model
     public function payment(): HasOne
     {
         return $this->hasOne(Payment::class);
+    }
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
     }
 }

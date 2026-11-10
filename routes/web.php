@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\OwnerPaymentController;
 use App\Http\Controllers\OwnerReservationController;
+use App\Http\Controllers\OwnerRoomController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationController;
 use App\Support\RoomCatalog;
@@ -67,7 +68,10 @@ Route::middleware('auth')->prefix('account')->name('payments.')->group(function 
 
 Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(function () {
     Route::get('/', [OwnerDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('rooms', OwnerRoomController::class)->except('show');
     Route::resource('reservations', OwnerReservationController::class);
+    Route::post('/reservations/{reservation}/assign-room', [OwnerReservationController::class, 'assignRoom'])
+        ->name('reservations.assign-room');
     Route::patch('/reservations/{reservation}/cancel', [OwnerReservationController::class, 'cancel'])
         ->name('reservations.cancel');
     Route::post('/payments/{payment}/verify', [OwnerPaymentController::class, 'verify'])->name('payments.verify');

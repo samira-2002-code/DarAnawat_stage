@@ -8,6 +8,11 @@
         <div>
             <p class="font-semibold">{{ __('site.owner.room') }}</p>
             <p class="mt-1">{{ __('site.rooms.' . $reservation->room_type . '.name') }} · {{ $reservation->guests }}</p>
+            @if ($reservation->room)
+                <p class="mt-1">{{ __('site.owner.rooms.number') }}: {{ $reservation->room->room_number }}</p>
+            @elseif ($reservation->status === 'confirmed')
+                <p class="mt-1 text-[#8a5b18]">{{ __('site.owner.rooms.legacy_unassigned') }}</p>
+            @endif
         </div>
         <div>
             <p class="font-semibold">{{ __('site.owner.dates') }}</p>
@@ -98,6 +103,19 @@
                 <form action="{{ route('owner.reservations.confirm', $reservation) }}" method="POST" class="mt-5 space-y-3 border-t border-[#e7ddca] pt-5">
                     @csrf
                     <p class="text-sm font-semibold">{{ __('site.owner.confirm_warning') }}</p>
+                    @if ($roomOptions['hasInventory'])
+                        <label class="block text-sm font-semibold" for="room-{{ $reservation->getKey() }}">{{ __('site.owner.rooms.assign') }}</label>
+                        <select id="room-{{ $reservation->getKey() }}" name="room_id" required class="form-field">
+                            <option value="">{{ __('site.owner.rooms.choose') }}</option>
+                            @foreach ($roomOptions['rooms'] as $room)
+                                <option value="{{ $room->getKey() }}" @selected((string) old('room_id') === (string) $room->getKey())>{{ $room->room_number }} · {{ __('site.owner.rooms.statuses.'.$room->status) }}</option>
+                            @endforeach
+                        </select>
+                        @error('room_id')<p class="text-sm text-red-700">{{ $message }}</p>@enderror
+                        @if ($roomOptions['rooms']->isEmpty())
+                            <p class="text-sm text-[#8a352b]">{{ __('site.owner.rooms.no_available_rooms') }}</p>
+                        @endif
+                    @endif
                     <label class="flex items-start gap-2 text-sm">
                         <input name="availability_confirmed" type="checkbox" value="1" required class="mt-1">
                         <span>{{ __('site.owner.availability_confirmed') }}</span>
