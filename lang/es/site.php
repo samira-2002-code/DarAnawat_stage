@@ -14,8 +14,10 @@ return [
         'view_details' => 'Ver detalles',
         'book_now' => 'Reservar ahora',
         'capacity' => 'Capacidad',
-        'bed_type' => 'Tipo de cama',
+        'bed_type' => 'Camas',
         'surface' => 'Superficie',
+        'air_conditioning' => 'Aire acondicionado',
+        'available' => 'Disponible',
     ],
     'home' => [
         'hero' => [
@@ -117,6 +119,7 @@ return [
             'description' => 'Una estancia tranquila para una persona, donde los materiales naturales y los detalles marroquíes se unen al confort actual. Un lugar apacible al que volver después de descubrir Marrakech.',
             'capacity' => '1 persona',
             'bed' => 'Cama individual',
+            'detail_bed' => '2 camas separadas',
         ],
         'double' => [
             'name' => 'Habitación doble',
@@ -124,6 +127,7 @@ return [
             'description' => 'Una habitación luminosa y cómoda para dos personas. Los materiales naturales y los detalles marroquíes crean un ambiente acogedor, junto al confort contemporáneo de Dar Anawat.',
             'capacity' => '2 personas',
             'bed' => 'Cama queen size',
+            'detail_bed' => '1 cama grande',
         ],
         'triple' => [
             'name' => 'Habitación triple',
@@ -131,6 +135,7 @@ return [
             'description' => 'Una habitación acogedora para hasta tres personas, con detalles marroquíes y comodidades actuales. Descubran Marrakech juntos y regresen a un ambiente sereno donde descansar.',
             'capacity' => '3 personas',
             'bed' => 'Alojamiento para 3 personas',
+            'detail_bed' => '3 camas separadas',
         ],
         'suite' => [
             'name' => 'Suite',
@@ -138,6 +143,7 @@ return [
             'description' => 'Una suite refinada y espaciosa para hasta cuatro personas. La artesanía marroquí se une al confort contemporáneo en un ambiente íntimo para descansar después de recorrer la ciudad.',
             'capacity' => 'Hasta 4 personas',
             'bed' => 'Cama king size y sofá cama',
+            'detail_bed' => '1 cama grande + terraza privada',
         ],
     ],
     'details' => [
@@ -150,7 +156,7 @@ return [
         'amenities_title' => 'Servicios',
         'amenities' => [
             'Wi-Fi gratuito', 'Aire acondicionado', 'Baño privado', 'Toallas',
-            'Artículos de aseo', 'Televisión', 'Pequeño espacio de almacenamiento',
+            'Artículos de aseo', 'Pequeño espacio de almacenamiento',
         ],
         'breakfast' => [
             'kicker' => 'Un despertar con sabor local',

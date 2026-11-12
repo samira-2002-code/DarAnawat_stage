@@ -1,4 +1,4 @@
-@props(['room'])
+@props(['room', 'showSize' => true])
 
 <article id="chambre-{{ $room['slug'] }}" class="room-card group flex h-full flex-col overflow-hidden rounded-[2rem] border border-[#e8dcc0] bg-[#fffdf9] shadow-[var(--shadow)]">
     <a href="{{ route('chambre.details', ['type' => $room['slug']]) }}" class="h-[260px] w-full shrink-0 overflow-hidden" aria-label="{{ __('site.common.view_details') }} : {{ __('site.rooms.' . $room['slug'] . '.name') }}">
@@ -23,7 +23,7 @@
         <div class="flex flex-wrap gap-2 border-t border-[#eee5d5] pt-4 text-xs font-medium text-[#3b4b45]">
             <span class="rounded-full border border-[#d8c9a7] bg-[#f7f0e0] px-3 py-2">👤 {{ __('site.rooms.' . $room['slug'] . '.capacity') }}</span>
             <span class="rounded-full border border-[#d8c9a7] bg-[#f7f0e0] px-3 py-2">🛏 {{ __('site.rooms.' . $room['slug'] . '.bed') }}</span>
-            @if ($room['surface'])
+            @if ($showSize && $room['surface'])
                 <span class="rounded-full border border-[#d8c9a7] bg-[#f7f0e0] px-3 py-2">{{ $room['surface'] }}</span>
             @endif
             <span class="rounded-full border border-[#d8c9a7] bg-[#f7f0e0] px-3 py-2">{{ __('site.details.breakfast.included_short') }}</span>
