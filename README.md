@@ -260,10 +260,27 @@ The test results must be checked after execution; this README does not claim tha
 
 ## 10. Recent Changes
 
-The latest requested frontend modification is to remove the **Size** information from:
-
-- The rooms listing page.
-- The room details page.
+- Page d’accueil.
+- Page Chambres.
+- Page Détail d’une chambre.
+- Formulaire de demande de réservation relié à Laravel.
+- Enregistrement en base des demandes en attente de vérification.
+- Validation serveur des coordonnées, des dates et de la capacité des chambres.
+- Interface de réservation traduite en français, anglais, espagnol et arabe.
+- Composants Navbar, Footer et carte de chambre.
+- Création de compte et connexion pour consulter ses propres réservations et paiements.
+- Paiement exclusivement par virement bancaire classique : le client effectue lui-même le virement depuis son application bancaire.
+- Instructions bancaires centralisées dans `config/payment.php`. Aucun paiement n’est traité par carte ou par une passerelle externe.
+- Signalement du virement et dépôt facultatif d’un justificatif PDF/JPG/PNG (5 Mo maximum), stocké sur le disque privé `payment_receipts`.
+- Espace propriétaire protégé par authentification et rôle. Le propriétaire est créé explicitement avec la commande interactive indiquée ci-dessous ; aucun compte ou mot de passe administrateur n’est codé en dur.
+- Vérification des fonds et confirmation de la réservation comme deux décisions distinctes, avec historique des décisions.
+- Contrôle automatique des chevauchements pour une même catégorie de chambre lors d’une demande, d’une modification des dates/de la catégorie et de la confirmation. Les dates de départ et d’arrivée qui se suivent sont autorisées ; les réservations annulées ne bloquent pas les dates.
+- Inventaire physique administrable par le propriétaire : numéro unique, catégorie, prix par nuit et statut disponible/maintenance/inactif. Les réservations confirmées sont attribuées à une chambre précise ; plusieurs chambres d’une même catégorie peuvent accueillir simultanément des séjours distincts.
+- Les migrations d’inventaire créent les chambres sans données fictives et ajoutent `reservations.room_id` nullable. Les réservations existantes sont conservées sans attribution ; les réservations confirmées historiques peuvent être associées manuellement à une chambre depuis leurs détails. Tant qu’une réservation historique chevauchante reste non attribuée, elle bloque prudemment toutes les chambres de sa catégorie pour ces dates. Cette même règle s’applique à la consultation, à l’affectation/réaffectation et à la confirmation ; seule la réservation historique en cours d’affectation est exclue de son propre contrôle.
+- Le propriétaire peut réaffecter depuis la fiche une réservation confirmée déjà associée à une chambre. La transaction valide la catégorie, le statut disponible et l’absence de conflit sur la nouvelle chambre avant d’enregistrer le changement ; un échec conserve l’attribution précédente.
+- Le prix par nuit de la chambre est enregistré et administrable dans l’inventaire. Le montant du paiement reste calculé selon les tarifs de catégorie existants (`config/rooms.php`) afin de préserver le parcours de paiement actuel ; le raccordement des tarifs physiques au montant client nécessite une règle de tarification distincte.
+- L’inventaire n’est pas prérempli : renseignez les chambres réelles dans l’espace propriétaire après les migrations. Tant qu’une catégorie n’a aucune chambre configurée, l’ancien parcours de demandes par catégorie reste disponible ; la confirmation exige une chambre physique dès qu’un inventaire existe pour cette catégorie.
+- The **Size** information was removed from the rooms listing page and room details page.
 
 All other room information and reservation functionality should remain unchanged.
 
@@ -288,7 +305,7 @@ The objective of Dar Anawat is to provide a professional digital presence for a 
 
 ---
 
-**Project:** Dar Anawat  
-**Framework:** Laravel 12  
-**Repository:** https://github.com/samira-2002-code/DarAnawat_stage.git  
+**Project:** Dar Anawat
+**Framework:** Laravel 12
+**Repository:** https://github.com/samira-2002-code/DarAnawat_stage.git
 **Status:** Under development

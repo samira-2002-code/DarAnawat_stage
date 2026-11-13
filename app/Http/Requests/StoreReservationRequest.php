@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Reservation;
+use App\Support\RoomAvailability;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -47,6 +48,27 @@ class StoreReservationRequest extends FormRequest
                         __('site.reservation.errors.capacity', ['capacity' => $capacity]),
                     );
                 }
+
+                if (
+                    $validator->errors()->has('room_type')
+                    || $validator->errors()->has('check_in')
+                    || $validator->errors()->has('check_out')
+                ) {
+                    return;
+                }
+
+                $checkIn = $this->input('check_in');
+                $checkOut = $this->input('check_out');
+
+                if (! is_string($roomType) || ! is_string($checkIn) || ! is_string($checkOut)) {
+                    return;
+                }
+
+                app(RoomAvailability::class)->assertCategoryAvailable(
+                    $roomType,
+                    $checkIn,
+                    $checkOut,
+                );
             },
         ];
     }

@@ -92,6 +92,12 @@ class ReservationTest extends TestCase
             'guests' => 3,
         ])->assertRedirect(route('reservations.create'))
             ->assertSessionHas('reservation_success');
+
+        $this->assertDatabaseHas('payments', [
+            'reservation_id' => Reservation::query()->value('id'),
+            'amount_mad' => 3000,
+            'status' => 'awaiting_transfer',
+        ]);
     }
 
     public function test_authenticated_user_is_linked_to_their_reservation_request(): void
